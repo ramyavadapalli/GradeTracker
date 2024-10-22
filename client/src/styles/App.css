@@ -1,0 +1,48 @@
+/* Ensure the body and html take the full height of the viewport */
+html, body {
+    height: 100%; /* Set full height */
+    margin: 0; /* Remove default margin */
+}
+/* Make .container a flex container */
+.container {
+    display: flex; /* Use flexbox */
+    flex-direction: column; /* Stack children vertically */
+    min-height: 100vh; /* Full height of the viewport */
+}
+/* Ensure the main content grows to fill available space */
+.main {
+    flex: 1; /* This allows the main section to take up the remaining space */
+    text-align: left; /* Align text to the left */
+    padding: 20px 0; /* Add some padding at the top and bottom */
+    width: 100%; /* Full width */
+}
+/* Header styles */
+.header {
+    position: fixed; /* Fixes the header to the top */
+    top: 0; /* Aligns to the top */
+    left: 0; /* Aligns to the left */
+    right: 0; /* Ensures it takes full width */
+    background-color: #f1f8e9; /* Header background color */
+    z-index: 1000; /* Keep it on top of other content */
+    padding: 10px 20px; /* Padding for header */
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1); /* Optional shadow for depth */
+}
+/* Footer styles */
+.footer {
+    display: flex; /* Flex container for footer links */
+    justify-content: space-around; /* Space out links */
+    width: 100%; /* Full width */
+    padding: 10px; /* Padding for aesthetics */
+    background-color: #f1f8e9; /* Background color for footer */
+    position: relative; /* Ensure footer can be positioned correctly */
+}
+/* Title styles */
+.title {
+    font-size: 75px; /* Font size from Figma */
+    font-style: italic; /* Make it italic */
+    font-weight: 600; /* Semi-bold weight */
+    font-family: "Roboto Condensed", sans-serif; /* Use Roboto Condensed */
+    margin-top: 80px; /* Increase this value to move the title down (adjust based on your navbar height) */
+    margin-bottom: 10px; /* Space below the title */
+    padding-left: 5px; /* Add padding to the left for spacing */
+}
