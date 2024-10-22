@@ -1,0 +1,50 @@
+/* Main Navbar Container */
+.navbar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 20px;
+    background-color: #f1f8e9; /* Green background */
+    box-shadow: 0px 2px 10px rgba(0, 0, 0, 0.1);
+    position: fixed;
+    width: 100%;
+    top: 0;
+    left: 0;
+    z-index: 1000;
+  }
+  
+  /* Logo Section (Left) */
+  .logoSection {
+    display: flex;
+    align-items: center;
+  }
+  
+  .logo {
+    height: 40px;
+    margin-right: 10px;
+  }
+  
+  .brandName {
+    font-size: 24px;
+    font-weight: bold;
+    color: #00763d; /* Updated color */
+    text-decoration: none;
+  }
+  
+  /* Right Section: Signup Link */
+  .rightSection {
+    display: flex;
+    align-items: center;
+  }
+  
+  .signupButton {
+    color: #00763d;
+    font-weight: bold;
+    text-decoration: none;
+    font-size: 18px;
+  }
+  
+  .signupButton:hover {
+    text-decoration: underline;
+  }
+  
