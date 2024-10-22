@@ -1,0 +1,21 @@
+.container {
+  padding: 20px; /* General padding for the container */
+  font-family: "Roboto", sans-serif; /* Font for the entire container */
+}
+
+.title {
+  font-size: 60px; /* Match the font size from the homepage */
+  font-weight: 600; /* Semi-bold weight */
+  font-family: "Roboto Condensed", sans-serif; /* Use Roboto Condensed */
+  margin-top: 50px; /* Space above the title */
+  margin-bottom: 10px; /* Space below the title */
+  padding-left: 5px; /* Padding to the left for spacing */
+}
+
+.description {
+  font-size: 1rem; /* Size for the description */
+  text-align: left; /* Align to the left */
+  margin: 0; /* Remove default margin */
+  padding-left: 20px; /* Add padding to the left for spacing */
+  line-height: 1.5; /* Better spacing between lines */
+}

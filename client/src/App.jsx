@@ -1,9 +1,9 @@
 import { useState } from "react";
 import "bootstrap/dist/css/bootstrap.min.css";
-import Signup from "./Signup";
+import Signup from "./components/Signup";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
-import Login from "./Login";
-import Home from "./Home";
+import Login from "./components/Login";
+import Home from "./components/Home";
 
 function App() {
   return (
