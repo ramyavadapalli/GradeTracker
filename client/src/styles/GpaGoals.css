@@ -1,0 +1,63 @@
+/* styles/GpaGoals.css */
+
+.container {
+    max-width: 600px;
+    margin: 100px auto; /* Adjust to ensure content is below navbar */
+    padding: 20px;
+    background-color: #f9f9f9;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    text-align: center;
+  }
+  
+  .title {
+    font-size: 32px;
+    margin-bottom: 20px;
+  }
+  
+  .goal-form {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+  }
+  
+  .form-group {
+    display: flex;
+    flex-direction: column;
+    text-align: left;
+  }
+  
+  input {
+    padding: 10px;
+    font-size: 16px;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+  }
+  
+  input:focus {
+    outline: none;
+    border-color: #00763d;
+    box-shadow: 0 0 5px rgba(0, 118, 61, 0.5);
+  }
+  
+  .submit-button {
+    padding: 10px;
+    font-size: 18px;
+    background-color: #00763d;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+  }
+  
+  .submit-button:hover {
+    background-color: #005f2d;
+  }
+  
+  .message {
+    margin-top: 20px;
+    font-size: 18px;
+    color: #333;
+  }
+  

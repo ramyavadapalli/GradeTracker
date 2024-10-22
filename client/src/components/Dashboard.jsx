@@ -1,5 +1,7 @@
+// src/components/Dashboard.jsx
 import React, { useState, useEffect } from "react";
 import axios from "axios";
+import Footer from "./Footer"; // Import the Footer component
 import { Bar } from "react-chartjs-2";
 import {
   Chart as ChartJS,
@@ -15,14 +17,7 @@ import "../styles/Dashboard.css";
 import Footer from "../components/Footer"; // Import Footer
 
 // Register the chart components
-ChartJS.register(
-  CategoryScale,
-  LinearScale,
-  BarElement,
-  Title,
-  Tooltip,
-  Legend
-);
+ChartJS.register(CategoryScale, LinearScale, BarElement, Title, Tooltip, Legend);
 
 function Dashboard() {
   const [userData, setUserData] = useState(null);
@@ -32,9 +27,7 @@ function Dashboard() {
   useEffect(() => {
     axios
       .get(`http://localhost:3001/user/${userId}`)
-      .then((response) => {
-        setUserData(response.data);
-      })
+      .then((response) => setUserData(response.data))
       .catch((error) => console.error("Error fetching user data:", error));
   }, [userId]);
 
