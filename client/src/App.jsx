@@ -6,10 +6,10 @@ import Home from "./components/Home";
 import Setup from "./components/Setup";
 import Dashboard from "./components/Dashboard";
 import GpaGoals from "./components/GpaGoals";
-import CurrentSemester from "./components/CurrentSemester";
+import CurrentSemester from "./components/CurrentSemester/CurrentSemester";
 import EditSemesters from "./components/EditSemesters";
 import FAQ from "./components/FAQs";
-import Feedback from './components/Feedbacktt';
+import Feedback from "./components/Feedbacktt";
 
 function App() {
   return (

@@ -17,7 +17,14 @@ import Footer from "../components/Footer"; // Import Footer
 import Navbar from "../components/Navbar"; // Import Navbar
 
 // Register the chart components
-ChartJS.register(CategoryScale, LinearScale, BarElement, Title, Tooltip, Legend);
+ChartJS.register(
+  CategoryScale,
+  LinearScale,
+  BarElement,
+  Title,
+  Tooltip,
+  Legend
+);
 
 function Dashboard() {
   const [userData, setUserData] = useState(null);
@@ -56,7 +63,6 @@ function Dashboard() {
 
       {/* Greeting Section */}
       <h2 className="greeting">Hi, {name}!</h2>
-
       <div className="dashboard-row">
         {/* Left side - GPA Trend Chart */}
         <div className="dashboard-chart">
@@ -88,7 +94,8 @@ function Dashboard() {
           </ul>
         </div>
       </div>
-      <div className="footer-spacing"></div> {/* Add whitespace above the footer */}
+      <div className="footer-spacing"></div>{" "}
+      {/* Add whitespace above the footer */}
       <Footer />
     </div>
   );
