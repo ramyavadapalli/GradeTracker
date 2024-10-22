@@ -1,23 +1,44 @@
 /* styles/Footer.module.css */
+
+/* Ensure the footer sticks to the bottom */
 .footer {
   display: flex;
   justify-content: space-between;
   padding: 20px;
   background-color: #f1f8e9;
-  color: #00763d; /* Change text color to match the header */
+  color: #00763d;
+  width: 100%; /* Ensure it spans the full width */
+  box-shadow: 0 -2px 5px rgba(0, 0, 0, 0.1); /* Add shadow for separation */
 }
 
+/* Ensure footer stays at the bottom */
+html, body {
+  margin: 0;
+  padding: 0;
+  height: 100%;
+}
+
+.page-container {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+}
+
+.content-wrap {
+  flex: 1;
+}
+
+/* Left section styles */
 .leftSection {
   display: flex;
   flex-direction: column;
-  justify-content: flex-start;
   align-items: flex-start;
 }
 
 .logo {
   font-size: 24px;
   margin-bottom: 10px;
-  color: #00763d; /* Change logo color to match the header */
+  color: #00763d;
 }
 
 .socialIcons {
@@ -26,20 +47,22 @@
 }
 
 .socialIcons a {
-  color: #00763d; /* Change icon color to match the header */
+  color: #00763d;
   font-size: 24px;
   transition: color 0.3s ease;
 }
 
 .socialIcons a:hover {
-  color: #004d26; /* Darken icon color on hover */
+  color: #004d26;
 }
 
+/* Right section styles */
 .rightSection {
   display: flex;
   gap: 40px;
 }
 
+/* Column layout */
 .column {
   display: flex;
   flex-direction: column;
@@ -48,16 +71,16 @@
 .columnHeader {
   font-size: 18px;
   margin-bottom: 10px;
-  color: #00763d; /* Change column header color */
+  color: #00763d;
 }
 
 .link {
-  color: #00763d; /* Change link color to match the header */
+  color: #00763d;
   text-decoration: none;
   margin-bottom: 8px;
   transition: color 0.3s ease;
 }
 
 .link:hover {
-  color: #004d26; /* Darken link color on hover */
+  color: #004d26;
 }
