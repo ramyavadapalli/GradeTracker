@@ -1,5 +1,7 @@
+// src/components/Dashboard.jsx
 import React, { useState, useEffect } from "react";
 import axios from "axios";
+import Footer from "./Footer"; // Import the Footer component
 import { Bar } from "react-chartjs-2";
 import {
   Chart as ChartJS,
@@ -11,16 +13,11 @@ import {
   Legend,
 } from "chart.js";
 import { useNavigate } from "react-router-dom";
+import "../styles/Dashboard.css"; 
+import Footer from "../components/Footer"; // Import Footer
 
 // Register the chart components
-ChartJS.register(
-  CategoryScale,
-  LinearScale,
-  BarElement,
-  Title,
-  Tooltip,
-  Legend
-);
+ChartJS.register(CategoryScale, LinearScale, BarElement, Title, Tooltip, Legend);
 
 function Dashboard() {
   const [userData, setUserData] = useState(null);
@@ -30,17 +27,15 @@ function Dashboard() {
   useEffect(() => {
     axios
       .get(`http://localhost:3001/user/${userId}`)
-      .then((response) => {
-        setUserData(response.data);
-      })
+      .then((response) => setUserData(response.data))
       .catch((error) => console.error("Error fetching user data:", error));
   }, [userId]);
 
   if (!userData) {
-    return <div>Loading...</div>;
+    return <div className="loading">Loading...</div>; // Add loading class
   }
 
-  const { semesters, overallGPA } = userData;
+  const { name, semesters, overallGPA } = userData;
 
   // Prepare chart data for GPA
   const gpaData = {
@@ -55,36 +50,43 @@ function Dashboard() {
   };
 
   return (
-    <div className="container">
-      <div className="row">
+    <div className="dashboard-container">
+      {/* Greeting Section */}
+      <h2 className="greeting">Hi, {name}!</h2>
+
+      <div className="dashboard-row">
         {/* Left side - GPA Trend Chart */}
-        <div className="col-md-8">
+        <div className="dashboard-chart">
           <h2>Overall GPA Trend</h2>
-          <Bar data={gpaData} />
+          <div className="bar-chart">
+            <Bar data={gpaData} options={{ maintainAspectRatio: false }} />
+          </div>
         </div>
 
-        {/* Right side - Recent Activity and Sidebar */}
-        <div className="col-md-4">
-          <div className="sidebar">
-            <h3>Cumulative GPA: {overallGPA}</h3>
-            <ul>
-              <li onClick={() => navigate("/gpa-goals")}>Set GPA Goals</li>
-              <li onClick={() => navigate("/current-semester")}>
-                Current Semester
-              </li>
-              <li onClick={() => navigate("/edit-semesters")}>
-                Edit Previous Semesters
-              </li>
-            </ul>
-          </div>
+        {/* Middle section - Recent Activity */}
+        <div className="recent-activity">
+          <h4>Recent Activity</h4>
+          <p>No recent activity yet.</p> {/* Placeholder text */}
+        </div>
 
-          {/* Leave Recent Activity section empty for now */}
-          <div className="recent-activity">
-            <h4>Recent Activity</h4>
-            {/* Future implementation for recent activity */}
-          </div>
+        {/* Right side - Cumulative GPA Sidebar */}
+        <div className="dashboard-sidebar">
+          <h3>Cumulative GPA: {overallGPA}</h3>
+          <ul>
+            <li onClick={() => navigate("/gpa-goals")}>
+              Set GPA Goals <span className="arrow">→</span>
+            </li>
+            <li onClick={() => navigate("/current-semester")}>
+              Current Semester <span className="arrow">→</span>
+            </li>
+            <li onClick={() => navigate("/edit-semesters")}>
+              Edit Previous Semesters <span className="arrow">→</span>
+            </li>
+          </ul>
         </div>
       </div>
+      <div className="footer-spacing"></div> {/* Add whitespace above the footer */}
+      <Footer />
     </div>
   );
 }
