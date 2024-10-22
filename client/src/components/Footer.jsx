@@ -29,7 +29,7 @@ const Footer = () => {
         {/* Account Column */}
         <div className="column">
           <h3 className="columnHeader">Account</h3>
-          <Link to="/signup" className="link">
+          <Link to="/register" className="link">
             Sign-up
           </Link>
           <Link to="/login" className="link">
