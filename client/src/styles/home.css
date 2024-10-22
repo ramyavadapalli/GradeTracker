@@ -1,109 +1,63 @@
-.container {
-  position: relative; /* Ensures absolute positioning works */
-  min-height: 100vh; /* Full height of the viewport */
+/* Navbar should be fixed at the top */
+nav {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  background-color: white;
+  z-index: 1000; /* Ensure it's above other content */
   display: flex;
-  flex-direction: column; /* Stack children vertically */
+  justify-content: space-between;
+  padding: 10px 20px;
+  box-shadow: 0px 2px 5px rgba(0, 0, 0, 0.1);
 }
 
-.header {
-  position: fixed; /* Fixes the header to the top */
-  top: 0; /* Aligns to the top */
-  left: 0; /* Aligns to the left */
-  right: 0; /* Ensures it takes full width */
-  background-color: #f1f8e9; /* Header background color */
-  z-index: 1000; /* Keep it on top of other content */
-  padding: 10px 20px; /* Padding for header */
-  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1); /* Optional shadow for depth */
-}
-
-.navbar {
-  display: flex;
-  justify-content: space-between; /* Space between logo and profile tab */
-  align-items: center; /* Center items vertically */
-  width: 100%; /* Ensure it takes the full width */
-}
-
-.profileTab {
-  color: #00763d; /* Profile link color */
-  font-family: "Sedan SC", sans-serif; /* Set the font family */
-  text-decoration: none; /* Remove underline */
-  font-size: 20px; /* Font size for profile link */
-}
-
-.logo {
-  display: flex; /* Use flexbox to align items */
-  align-items: center; /* Center vertically */
-  color: #00763d; /* Logo text color */
-  font-family: "Sedan SC", sans-serif; /* Set the font family */
-  font-size: 40px; /* Adjust size to match the rest */
-}
-
-.logoImage {
-  height: 40px; /* Adjust size as needed */
-  width: auto; /* Maintain aspect ratio */
-  margin-right: 10px; /* Space between image and text */
-}
-
-.logoText {
-  font-family: "Sedan SC", sans-serif; /* Set the font family */
-  font-size: 40px; /* Adjust the size as needed */
-  color: #00763d; /* Change to your desired color */
-}
-
+/* Ensure the main content is below the navbar */
 .main {
-  text-align: left; /* Align text to the left */
-  padding: 20px 0; /* Add some padding at the top and bottom */
-  width: 100%; /* Full width */
+  position: relative;
+  margin-top: 60px; /* Adjust based on the navbar height */
+  height: calc(100vh - 60px); /* Full height minus navbar */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
 }
 
+/* Background Image Styling */
 .backgroundImage {
-  position: absolute; /* Positioning to cover the entire area */
-  top: 0; /* Align to the top */
-  left: 0; /* Align to the left */
-  width: 100%; /* Full width */
-  height: 100%; /* Full height */
-  object-fit: cover; /* Ensure the image covers the area */
-  z-index: -1; /* Send the image behind other elements */
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  z-index: -1; /* Behind all content */
+}
+
+/* Content Styling */
+.content {
+  z-index: 1; /* Ensure it stays on top of the background */
+  color: #333;
 }
 
 .title {
-  font-size: 75px; /* Font size from Figma */
-  font-style: italic; /* Make it italic */
-  font-weight: 600; /* Semi-bold weight */
-  font-family: "Roboto Condensed", sans-serif; /* Use Roboto Condensed */
-  margin-top: 50px; /* Increase this value for more space above the title */
-  margin-bottom: 10px; /* Space below the title */
-  padding-left: 5px; /* Add padding to the left for spacing */
+  font-size: 2.5rem;
+  margin-bottom: 10px;
 }
 
 .subtitle {
-  font-size: 1rem; /* Adjust size as needed */
-  text-align: left; /* Align to the left */
-  margin: 0; /* Remove default margin */
-  padding-left: 20px; /* Add padding to the left for spacing */
-  font-family: "Roboto", sans-serif; /* Apply Roboto font */
+  font-size: 1.2rem;
+  margin-bottom: 20px;
 }
 
 .joinNow {
-  display: inline-block; /* Keeps it inline with proper spacing */
-  margin-top: 20px; /* Space above the link */
-  margin-left: 10px; /* Move the button 10px to the right */
-  padding: 5px 10px; /* Padding for tighter spacing */
-  background-color: #0070f3; /* Background color */
-  color: white; /* Text color */
-  border-radius: 5px; /* Rounded corners */
-  text-decoration: none; /* Remove underline */
-  font-size: 1rem; /* Font size */
+  background-color: #007bff;
+  color: white;
+  padding: 10px 20px;
+  text-decoration: none;
+  border-radius: 5px;
 }
 
 .joinNow:hover {
-  background-color: #005bb5; /* Darker blue on hover */
-}
-
-.footer {
-  display: flex; /* Flex container for footer links */
-  justify-content: space-around; /* Space out links */
-  width: 100%; /* Full width */
-  padding: 10px; /* Padding for aesthetics */
-  background-color: #f1f8e9; /* Background color for footer */
+  background-color: #0056b3;
 }

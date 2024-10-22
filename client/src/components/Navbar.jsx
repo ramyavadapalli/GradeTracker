@@ -1,30 +1,26 @@
-import { Link } from "react-router-dom";
-import "../styles/home.css";
+import React from 'react';
+import { Link } from 'react-router-dom';
 
-const Navbar = ({ showSignup, showProfile }) => {
+const Navbar = ({ showSignup = true }) => {
   return (
-    <header className="header">
-      <nav className="navbar">
-        <Link href="/" className="logo">
-          <img
-            src="/gradetracker logo.png"
-            alt="GradeTrackr Logo"
-            className="logoImage"
-          />
-          <span className="logoText">GradeTrackr</span>
+    <nav className="navbar">
+      {/* Logo on the left */}
+      <div className="logoSection">
+        <img src="/images/logo.png" alt="GradeTrackr Logo" className="logo" />
+        <Link to="/" className="brandName">
+          GradeTrackr
         </Link>
+      </div>
+
+      {/* Right Section: Signup link */}
+      <div className="rightSection">
         {showSignup && (
-          <Link to="/register" className="profileTab">
+          <Link to="/register" className="signupButton">
             Sign Up
           </Link>
         )}
-        {showProfile && (
-          <Link href="/profile" className="profileTab">
-            Profile
-          </Link>
-        )}
-      </nav>
-    </header>
+      </div>
+    </nav>
   );
 };
 
