@@ -25,6 +25,7 @@ function App() {
         <Route path="/edit-semesters" element={<EditSemesters />}></Route>
         <Route path="/FAQ" element={<FAQ />} /> {/* New FAQ Route */}
         <Route path="/feedback" element={<Feedback />} /> {/* Feedback route */}
+        <Route path="/goals" element={<GpaGoals />} /> {/* GPA Goals Route */}
       </Routes>
     </BrowserRouter>
   );

@@ -1,5 +1,7 @@
+// src/components/Dashboard.jsx
 import React, { useState, useEffect } from "react";
 import axios from "axios";
+import Footer from "./Footer"; // Import the Footer component
 import { Bar } from "react-chartjs-2";
 import {
   Chart as ChartJS,
@@ -13,14 +15,7 @@ import {
 import { useNavigate } from "react-router-dom";
 
 // Register the chart components
-ChartJS.register(
-  CategoryScale,
-  LinearScale,
-  BarElement,
-  Title,
-  Tooltip,
-  Legend
-);
+ChartJS.register(CategoryScale, LinearScale, BarElement, Title, Tooltip, Legend);
 
 function Dashboard() {
   const [userData, setUserData] = useState(null);
@@ -30,9 +25,7 @@ function Dashboard() {
   useEffect(() => {
     axios
       .get(`http://localhost:3001/user/${userId}`)
-      .then((response) => {
-        setUserData(response.data);
-      })
+      .then((response) => setUserData(response.data))
       .catch((error) => console.error("Error fetching user data:", error));
   }, [userId]);
 
@@ -55,36 +48,39 @@ function Dashboard() {
   };
 
   return (
-    <div className="container">
-      <div className="row">
-        {/* Left side - GPA Trend Chart */}
-        <div className="col-md-8">
-          <h2>Overall GPA Trend</h2>
-          <Bar data={gpaData} />
-        </div>
-
-        {/* Right side - Recent Activity and Sidebar */}
-        <div className="col-md-4">
-          <div className="sidebar">
-            <h3>Cumulative GPA: {overallGPA}</h3>
-            <ul>
-              <li onClick={() => navigate("/gpa-goals")}>Set GPA Goals</li>
-              <li onClick={() => navigate("/current-semester")}>
-                Current Semester
-              </li>
-              <li onClick={() => navigate("/edit-semesters")}>
-                Edit Previous Semesters
-              </li>
-            </ul>
+    <div className="dashboard-container">
+      <div className="content">
+        <div className="row">
+          {/* Left side - GPA Trend Chart */}
+          <div className="col-md-8">
+            <h2>Overall GPA Trend</h2>
+            <Bar data={gpaData} />
           </div>
 
-          {/* Leave Recent Activity section empty for now */}
-          <div className="recent-activity">
-            <h4>Recent Activity</h4>
-            {/* Future implementation for recent activity */}
+          {/* Right side - Recent Activity and Sidebar */}
+          <div className="col-md-4">
+            <div className="sidebar">
+              <h3>Cumulative GPA: {overallGPA}</h3>
+              <ul>
+                <li onClick={() => navigate("/gpa-goals")}>Set GPA Goals</li>
+                <li onClick={() => navigate("/current-semester")}>
+                  Current Semester
+                </li>
+                <li onClick={() => navigate("/edit-semesters")}>
+                  Edit Previous Semesters
+                </li>
+              </ul>
+            </div>
+
+            <div className="recent-activity">
+              <h4>Recent Activity</h4>
+              {/* Future implementation for recent activity */}
+            </div>
           </div>
         </div>
       </div>
+
+      <Footer /> {/* Footer at the bottom */}
     </div>
   );
 }
