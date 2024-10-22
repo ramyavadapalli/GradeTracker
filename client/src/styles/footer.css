@@ -1,86 +1,64 @@
-/* styles/Footer.module.css */
-
-/* Ensure the footer sticks to the bottom */
 .footer {
-  display: flex;
-  justify-content: space-between;
-  padding: 20px;
-  background-color: #f1f8e9;
-  color: #00763d;
-  width: 100%; /* Ensure it spans the full width */
-  box-shadow: 0 -2px 5px rgba(0, 0, 0, 0.1); /* Add shadow for separation */
+  display: flex; /* Flexbox layout for the footer */
+  justify-content: space-between; /* Space out sections evenly */
+  padding: 20px; /* Padding inside the footer */
+  background-color: #f1f8e9; /* Background color for the footer */
+  color: #00763d; /* Text color to match the header */
+  margin-top: auto; /* Ensures it stays at the bottom of the container */
+  width: 100%; /* Full width of the footer */
 }
 
-/* Ensure footer stays at the bottom */
-html, body {
-  margin: 0;
-  padding: 0;
-  height: 100%;
-}
-
-.page-container {
-  display: flex;
-  flex-direction: column;
-  min-height: 100vh;
-}
-
-.content-wrap {
-  flex: 1;
-}
-
-/* Left section styles */
 .leftSection {
-  display: flex;
-  flex-direction: column;
-  align-items: flex-start;
+  display: flex; /* Flex container for left section */
+  flex-direction: column; /* Stack items vertically */
+  justify-content: flex-start; /* Align items at the start */
+  align-items: flex-start; /* Align items to the left */
 }
 
 .logo {
-  font-size: 24px;
-  margin-bottom: 10px;
-  color: #00763d;
+  font-size: 24px; /* Size of the logo text */
+  margin-bottom: 10px; /* Space below the logo */
+  color: #00763d; /* Logo color */
 }
 
 .socialIcons {
-  display: flex;
-  gap: 10px;
+  display: flex; /* Flex container for social icons */
+  gap: 10px; /* Space between icons */
 }
 
 .socialIcons a {
-  color: #00763d;
-  font-size: 24px;
-  transition: color 0.3s ease;
+  color: #00763d; /* Default color for icons */
+  font-size: 24px; /* Size of the icons */
+  transition: color 0.3s ease; /* Smooth color transition on hover */
 }
 
 .socialIcons a:hover {
-  color: #004d26;
+  color: #004d26; /* Darken icon color on hover */
 }
 
-/* Right section styles */
 .rightSection {
-  display: flex;
-  gap: 40px;
+  display: flex; /* Flex container for right section */
+  gap: 40px; /* Space between columns */
 }
 
-/* Column layout */
 .column {
-  display: flex;
-  flex-direction: column;
+  display: flex; /* Flex container for individual columns */
+  flex-direction: column; /* Stack items vertically */
 }
 
 .columnHeader {
-  font-size: 18px;
-  margin-bottom: 10px;
-  color: #00763d;
+  font-size: 18px; /* Size of the column header */
+  margin-bottom: 10px; /* Space below the header */
+  color: #00763d; /* Change column header color */
 }
 
 .link {
-  color: #00763d;
-  text-decoration: none;
-  margin-bottom: 8px;
-  transition: color 0.3s ease;
+  color: #00763d; /* Default link color */
+  text-decoration: none; /* Remove underline */
+  margin-bottom: 8px; /* Space below each link */
+  transition: color 0.3s ease; /* Smooth color transition on hover */
 }
 
 .link:hover {
-  color: #004d26;
+  color: #004d26; /* Darken link color on hover */
 }
