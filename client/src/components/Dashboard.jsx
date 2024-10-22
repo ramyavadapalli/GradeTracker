@@ -13,11 +13,17 @@ import {
   Legend,
 } from "chart.js";
 import { useNavigate } from "react-router-dom";
-import "../styles/Dashboard.css"; 
-import Footer from "../components/Footer"; // Import Footer
+import "../styles/Dashboard.css";
 
 // Register the chart components
-ChartJS.register(CategoryScale, LinearScale, BarElement, Title, Tooltip, Legend);
+ChartJS.register(
+  CategoryScale,
+  LinearScale,
+  BarElement,
+  Title,
+  Tooltip,
+  Legend
+);
 
 function Dashboard() {
   const [userData, setUserData] = useState(null);
@@ -53,7 +59,6 @@ function Dashboard() {
     <div className="dashboard-container">
       {/* Greeting Section */}
       <h2 className="greeting">Hi, {name}!</h2>
-
       <div className="dashboard-row">
         {/* Left side - GPA Trend Chart */}
         <div className="dashboard-chart">
@@ -85,7 +90,8 @@ function Dashboard() {
           </ul>
         </div>
       </div>
-      <div className="footer-spacing"></div> {/* Add whitespace above the footer */}
+      <div className="footer-spacing"></div>{" "}
+      {/* Add whitespace above the footer */}
       <Footer />
     </div>
   );
