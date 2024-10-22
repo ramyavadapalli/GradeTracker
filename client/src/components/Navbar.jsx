@@ -6,18 +6,23 @@ const Navbar = ({ showSignup = true }) => {
     <nav className="navbar">
       {/* Logo on the left */}
       <div className="logoSection">
-        <img src="/images/logo.png" alt="GradeTrackr Logo" className="logo" />
+        <img src="/images/gradetracker logo.png" alt="GradeTrackr Logo" className="logo" />
         <Link to="/" className="brandName">
           GradeTrackr
         </Link>
       </div>
 
-      {/* Right Section: Signup link */}
+      {/* Right Section: Signup and Sign In links */}
       <div className="rightSection">
         {showSignup && (
-          <Link to="/register" className="signupButton">
-            Sign Up
-          </Link>
+          <>
+            <Link to="/register" className="signupButton">
+              Sign Up
+            </Link>
+            <Link to="/login" className="signinButton">
+              Sign In
+            </Link>
+          </>
         )}
       </div>
     </nav>
