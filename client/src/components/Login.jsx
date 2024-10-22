@@ -11,15 +11,25 @@ function Login() {
 
   const handleSubmit = (e) => {
     e.preventDefault();
+
     axios
       .post("http://localhost:3001/login", { email, password })
       .then((result) => {
-        console.log(result);
-        if (result.data === "Success") {
-          navigate("/home");
+        console.log("Login response:", result); // Log entire response
+        if (result.data.message === "Success") {
+          if (result.data.userId) {
+            // Ensure userId exists
+            localStorage.setItem("userId", result.data.userId);
+            console.log("User ID saved:", localStorage.getItem("userId")); // Confirm it's saved
+            navigate("/setup");
+          } else {
+            console.error("userId is undefined in the response.");
+          }
+        } else {
+          alert(result.data); // Handle non-success messages
         }
       })
-      .catch((error) => console.log(error));
+      .catch((error) => console.log("Error during login:", error));
   };
 
   return (
@@ -44,7 +54,7 @@ function Login() {
             />
           </div>
           <div className="mb-3">
-            <label htmlFor="email">
+            <label htmlFor="password">
               <strong>Password</strong>
             </label>
             <input
