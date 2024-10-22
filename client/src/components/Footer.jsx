@@ -9,18 +9,18 @@ const Footer = () => {
       <div className="leftSection">
         <h2 className="logo">GRADETRACKR</h2>
         <div className="socialIcons">
-          <Link href="https://www.youtube.com" aria-label="YouTube">
+          <a href="https://www.youtube.com" aria-label="YouTube" target="_blank" rel="noopener noreferrer">
             <FaYoutube />
-          </Link>
-          <Link href="https://www.twitter.com" aria-label="Twitter">
+          </a>
+          <a href="https://www.twitter.com" aria-label="Twitter" target="_blank" rel="noopener noreferrer">
             <FaTwitter />
-          </Link>
-          <Link href="https://www.linkedin.com" aria-label="LinkedIn">
+          </a>
+          <a href="https://www.linkedin.com" aria-label="LinkedIn" target="_blank" rel="noopener noreferrer">
             <FaLinkedin />
-          </Link>
-          <Link href="https://www.instagram.com" aria-label="Instagram">
+          </a>
+          <a href="https://www.instagram.com" aria-label="Instagram" target="_blank" rel="noopener noreferrer">
             <FaInstagram />
-          </Link>
+          </a>
         </div>
       </div>
 
@@ -29,13 +29,13 @@ const Footer = () => {
         {/* Account Column */}
         <div className="column">
           <h3 className="columnHeader">Account</h3>
-          <Link href="/signup" className="link">
+          <Link to="/signup" className="link">
             Sign-up
           </Link>
-          <Link href="/login" className="link">
+          <Link to="/login" className="link">
             Log In
           </Link>
-          <Link href="/help" className="link">
+          <Link to="/help" className="link">
             Help
           </Link>
         </div>
@@ -43,13 +43,13 @@ const Footer = () => {
         {/* Product Column */}
         <div className="column">
           <h3 className="columnHeader">Product</h3>
-          <Link href="/faq" className="link">
+          <Link to="/faq" className="link">
             FAQ
           </Link>
-          <Link href="/feedback" className="link">
+          <Link to="/feedback" className="link">
             Feedback
-          </Link>
-          <Link href="/resources" className="link">
+          </Link> {/* Feedback link added */}
+          <Link to="/resources" className="link">
             Resources
           </Link>
         </div>
@@ -57,13 +57,13 @@ const Footer = () => {
         {/* Company Column */}
         <div className="column">
           <h3 className="columnHeader">Company</h3>
-          <Link href="/contact" className="link">
+          <Link to="/contact" className="link">
             Contact us
           </Link>
-          <Link href="/our-story" className="link">
+          <Link to="/our-story" className="link">
             Our story
           </Link>
-          <Link href="/privacy" className="link">
+          <Link to="/privacy" className="link">
             Privacy policy
           </Link>
         </div>
