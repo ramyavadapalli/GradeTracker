@@ -1,7 +1,6 @@
 // src/components/Dashboard.jsx
 import React, { useState, useEffect } from "react";
 import axios from "axios";
-import Footer from "./Footer"; // Import the Footer component
 import { Bar } from "react-chartjs-2";
 import {
   Chart as ChartJS,
@@ -15,6 +14,7 @@ import {
 import { useNavigate } from "react-router-dom";
 import "../styles/Dashboard.css"; 
 import Footer from "../components/Footer"; // Import Footer
+import Navbar from "../components/Navbar"; // Import Navbar
 
 // Register the chart components
 ChartJS.register(CategoryScale, LinearScale, BarElement, Title, Tooltip, Legend);
@@ -51,6 +51,9 @@ function Dashboard() {
 
   return (
     <div className="dashboard-container">
+      {/* Navbar at the top */}
+      <Navbar showSignup={false} showProfile={true} /> {/* Adjust props as needed */}
+
       {/* Greeting Section */}
       <h2 className="greeting">Hi, {name}!</h2>
 
