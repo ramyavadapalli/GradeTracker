@@ -1,4 +1,5 @@
 // src/components/Footer.jsx
+import React from 'react';  // Import React to support JSX
 import { Link } from "react-router-dom";
 import "../styles/footer.css"; // Ensure correct path for CSS
 import { FaYoutube, FaTwitter, FaLinkedin, FaInstagram } from "react-icons/fa"; // Import icons

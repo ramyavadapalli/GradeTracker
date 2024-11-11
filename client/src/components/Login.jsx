@@ -7,6 +7,7 @@ import Footer from "./Footer"; // Import Footer
 function Login() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [errorMessage, setErrorMessage] = useState(""); // State to hold error messages
   const navigate = useNavigate();
 
   const handleSubmit = (e) => {
@@ -26,10 +27,13 @@ function Login() {
             console.error("userId is undefined in the response.");
           }
         } else {
-          alert(result.data); // Handle non-success messages
+          setErrorMessage(result.data.message || "Invalid credentials"); // Set error message
         }
       })
-      .catch((error) => console.log("Error during login:", error));
+      .catch((error) => {
+        console.log("Error during login:", error);
+        setErrorMessage("An error occurred. Please try again."); // Handle network errors
+      });
   };
 
   return (
@@ -44,6 +48,7 @@ function Login() {
               </label>
               <input
                 type="email"
+                id="email"
                 placeholder="Enter Email"
                 autoComplete="off"
                 name="email"
@@ -57,6 +62,7 @@ function Login() {
               </label>
               <input
                 type="password"
+                id="password"
                 placeholder="Enter Password"
                 name="password"
                 className="form-control rounded-0"
@@ -67,6 +73,7 @@ function Login() {
               Login
             </button>
           </form>
+          {errorMessage && <p className="text-danger">{errorMessage}</p>} {/* Show error message if exists */}
           <p>Already Have an Account?</p>
           <Link
             to="/register"

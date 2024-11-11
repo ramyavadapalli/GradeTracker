@@ -1,4 +1,4 @@
-import { useState } from "react";
+import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import "../styles/setup.css";
 import axios from "axios";
@@ -58,8 +58,9 @@ function Setup() {
 
       {step === 1 && (
         <div className="inputSection">
-          <label>How many semesters have you completed?</label>
+          <label htmlFor="numSemesters">How many semesters have you completed?</label>
           <input
+            id="numSemesters" // Added ID for input
             type="number"
             className="inputField"
             value={numSemesters}
@@ -128,4 +129,5 @@ function Setup() {
     </div>
   );
 }
-export default Setup;
+
+export default Setup; 
