@@ -17,16 +17,19 @@ function Login() {
       .then((result) => {
         console.log("Login response:", result); // Log entire response
         if (result.data.message === "Success") {
-          if (result.data.userId) {
-            // Ensure userId exists
-            localStorage.setItem("userId", result.data.userId);
-            console.log("User ID saved:", localStorage.getItem("userId")); // Confirm it's saved
-            navigate("/setup");
+          const userId = result.data.userId;
+          const hasCompletedSetup = result.data.hasCompletedSetup;
+
+          localStorage.setItem("userId", userId);
+          localStorage.setItem("hasCompletedSetup", hasCompletedSetup);
+
+          if (hasCompletedSetup) {
+            navigate("/dashboard");
           } else {
-            console.error("userId is undefined in the response.");
+            navigate("/setup");
           }
         } else {
-          alert(result.data); // Handle non-success messages
+          alert(result.data); // show error message from server
         }
       })
       .catch((error) => console.log("Error during login:", error));

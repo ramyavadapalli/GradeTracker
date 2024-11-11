@@ -40,6 +40,7 @@ function Setup() {
       userId,
       semesters: semesterData,
       overallGPA: calculatedGPA,
+      hasCompletedSetup: true,
     };
 
     axios

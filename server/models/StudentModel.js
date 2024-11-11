@@ -11,6 +11,9 @@ const StudentSchema = new mongoose.Schema({
   password: String,
   semesters: [SemesterSchema],
   overallGPA: Number,
+  hasCompletedSetup: { type: Boolean, default: false },
+  semesterGoal: { type: Number, default: null },
+  cumulativeGoal: { type: Number, default: null },
 });
 
 const StudentModel = mongoose.model("students", StudentSchema);

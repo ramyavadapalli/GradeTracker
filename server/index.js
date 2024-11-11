@@ -16,7 +16,11 @@ app.post("/login", (req, res) => {
   StudentModel.findOne({ email: email }).then((user) => {
     if (user) {
       if (user.password === password) {
-        res.json({ message: "Success", userId: user._id });
+        res.json({
+          message: "Success",
+          userId: user._id,
+          hasCompletedSetup: user.hasCompletedSetup,
+        });
       } else {
         res.json("The password is incorrect");
       }
@@ -27,7 +31,7 @@ app.post("/login", (req, res) => {
 });
 
 app.post("/signup", (req, res) => {
-  StudentModel.create(req.body)
+  StudentModel.create({ ...req.body, hasCompletedSetup: false })
     .then((students) => res.json(students))
     .catch((error) => res.json(error));
 });
@@ -40,6 +44,7 @@ app.post("/setup", async (req, res) => {
     if (student) {
       student.semesters = semesters;
       student.overallGPA = overallGPA;
+      student.hasCompletedSetup = true;
       await student.save();
       res.status(200).json("Setup data saved successfully.");
     } else {
@@ -59,6 +64,43 @@ app.get("/user/:userId", async (req, res) => {
     res.json(user);
   } catch (error) {
     res.status(500).json({ message: "Error fetching user data" });
+  }
+});
+
+// gpa goals
+app.post("/user/:userId/gpa-goals", async (req, res) => {
+  const { userId } = req.params;
+  const { semesterGoal, cumulativeGoal } = req.body;
+
+  try {
+    const user = await StudentModel.findById(userId);
+    if (user) {
+      user.semesterGoal = semesterGoal;
+      user.cumulativeGoal = cumulativeGoal;
+      await user.save();
+      res.status(200).json({ message: "GPA goals updated successfully" });
+    } else {
+      res.status(404).json({ message: "User not found" });
+    }
+  } catch (error) {
+    res.status(500).json({ message: "Error updating GPA goals" });
+  }
+});
+
+app.get("/user/:userId/gpa-goals", async (req, res) => {
+  const { userId } = req.params;
+  try {
+    const user = await StudentModel.findById(userId);
+    if (user) {
+      res.status(200).json({
+        semesterGoal: user.semesterGoal,
+        cumulativeGoal: user.cumulativeGoal,
+      });
+    } else {
+      res.status(404).json({ message: "User not found" });
+    }
+  } catch (error) {
+    res.status(500).json({ message: "Error retrieving GPA goals" });
   }
 });
 

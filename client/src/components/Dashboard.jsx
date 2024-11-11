@@ -12,7 +12,7 @@ import {
   Legend,
 } from "chart.js";
 import { useNavigate } from "react-router-dom";
-import "../styles/Dashboard.css"; 
+import "../styles/Dashboard.css";
 import Footer from "../components/Footer"; // Import Footer
 import Navbar from "../components/Navbar"; // Import Navbar
 
@@ -28,15 +28,33 @@ ChartJS.register(
 
 function Dashboard() {
   const [userData, setUserData] = useState(null);
-  const userId = localStorage.getItem("userId");
+  const [gpaGoals, setGpaGoals] = useState({});
   const navigate = useNavigate();
 
   useEffect(() => {
+    const userId = localStorage.getItem("userId");
+    if (!userId) {
+      navigate("/login");
+      return;
+    }
     axios
       .get(`http://localhost:3001/user/${userId}`)
-      .then((response) => setUserData(response.data))
+      .then((response) => {
+        setUserData(response.data);
+        if (!response.data.hasCompletedSetup) {
+          navigate("/setup");
+        }
+      })
       .catch((error) => console.error("Error fetching user data:", error));
-  }, [userId]);
+
+    //fetch gpa goals
+    axios
+      .get(`http://localhost:3001/user/${userId}/gpa-goals`)
+      .then((response) => {
+        setGpaGoals(response.data);
+      })
+      .catch((error) => console.error("Error fetching GPA goals:", error));
+  }, [navigate]);
 
   if (!userData) {
     return <div className="loading">Loading...</div>; // Add loading class
@@ -59,8 +77,8 @@ function Dashboard() {
   return (
     <div className="dashboard-container">
       {/* Navbar at the top */}
-      <Navbar showSignup={false} showProfile={true} /> {/* Adjust props as needed */}
-
+      <Navbar showSignup={false} showProfile={true} />{" "}
+      {/* Adjust props as needed */}
       {/* Greeting Section */}
       <h2 className="greeting">Hi, {name}!</h2>
       <div className="dashboard-row">
@@ -81,6 +99,8 @@ function Dashboard() {
         {/* Right side - Cumulative GPA Sidebar */}
         <div className="dashboard-sidebar">
           <h3>Cumulative GPA: {overallGPA}</h3>
+          <p>Semester Goal: {gpaGoals.semesterGoal || "Not set"}</p>
+          <p>Cumulative Goal: {gpaGoals.cumulativeGoal || "Not set"}</p>
           <ul>
             <li onClick={() => navigate("/gpa-goals")}>
               Set GPA Goals <span className="arrow">→</span>
