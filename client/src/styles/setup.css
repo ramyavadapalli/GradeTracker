@@ -1,12 +1,13 @@
 /* Container for the setup page */
-.container {
+.setup-container {
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  min-height: 100vh; /* Full height of the viewport */
+  min-height: calc(100vh - 60px); /* Adjust the height based on navbar and footer */
   padding: 20px;
-  background-color: #f8f9fa; /* Light gray background */
+  margin: 0; /* Remove default margin */
+  background-color: #f8f9fa; /* or your preferred background color */
 }
 
 /* Title of the setup page */
@@ -14,8 +15,8 @@
   font-size: 2.5rem;
   font-weight: 600;
   font-family: "Roboto Condensed", sans-serif;
+  color: #343a40;
   margin-bottom: 20px;
-  color: #343a40; /* Dark gray text color */
 }
 
 /* Input section styling */
@@ -24,12 +25,25 @@
   flex-direction: column;
   align-items: center;
   background-color: #fff;
-  padding: 30px;
+  padding: 20px;
   border-radius: 8px;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-  width: 80%;
-  max-width: 500px;
+  width: 90%;
+  max-width: 600px;
   margin-bottom: 20px;
+  position: relative;
+}
+
+/* Yellow bar at top of input section */
+.inputSectionHeader {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 8px;
+  background-color: #FFD700;
+  border-top-left-radius: 8px;
+  border-top-right-radius: 8px;
 }
 
 /* Input fields styling */
@@ -46,9 +60,8 @@
 
 /* Buttons for the setup process */
 .nextButton,
-.calculateButton,
 .finishButton {
-  background-color: #28a745; /* Green background */
+  background-color: #28a745;
   color: white;
   padding: 12px 20px;
   margin: 10px 0;
@@ -61,9 +74,8 @@
 }
 
 .nextButton:hover,
-.calculateButton:hover,
 .finishButton:hover {
-  background-color: #218838; /* Darker green on hover */
+  background-color: #218838;
 }
 
 /* Semester input container */
@@ -78,7 +90,7 @@
 .semesterInput label {
   font-weight: bold;
   margin-bottom: 5px;
-  color: #495057; /* Gray text */
+  color: #495057;
   font-family: "Roboto", sans-serif;
 }
 
@@ -89,23 +101,14 @@
   border-radius: 8px;
   margin-top: 20px;
   text-align: center;
-  width: 80%;
-  max-width: 500px;
+  width: 90%;
+  max-width: 600px;
 }
 
 /* GPA result text */
 .resultSection h2 {
   font-size: 1.5rem;
-  color: #007bff; /* Blue color */
+  color: #007bff;
   margin: 0;
   font-family: "Roboto Condensed", sans-serif;
-}
-
-/* Additional styling for completion button */
-.finishButton {
-  background-color: #0070f3; /* Blue background */
-}
-
-.finishButton:hover {
-  background-color: #005bb5; /* Darker blue on hover */
 }
