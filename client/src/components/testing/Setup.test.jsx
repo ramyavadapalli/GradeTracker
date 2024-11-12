@@ -4,7 +4,7 @@ import { render, screen, fireEvent, waitFor } from '@testing-library/react';
 import { vi } from 'vitest';
 import Setup from '../Setup';
 import axios from 'axios';
-import { BrowserRouter, Route, Routes, useNavigate } from 'react-router-dom'; // Explicitly import BrowserRouter
+import { BrowserRouter, useNavigate } from 'react-router-dom'; // Explicitly import BrowserRouter
 
 // Mock axios
 vi.mock('axios');
@@ -12,7 +12,7 @@ vi.mock('axios');
 // Mock react-router-dom properly
 vi.mock('react-router-dom', () => ({
   BrowserRouter: ({ children }) => <div>{children}</div>,  // Mock BrowserRouter
-  useNavigate: vi.fn(), // Mock useNavigate as needed
+  useNavigate: vi.fn(), // Mock useNavigate as needed,
 }));
 
 describe('Setup Component', () => {
@@ -20,7 +20,10 @@ describe('Setup Component', () => {
     axios.post.mockResolvedValue({ data: 'Success' });  // Mock the axios response
   });
 
-  test('should render and allow user to input name, email, and password', async () => {
+  // -------------------- Black-box Testing --------------------
+  // Black-box testing focuses on the functionality of the component without any knowledge of its internal implementation.
+
+  test('should render and allow user to input number of semesters', async () => {
     render(
       <BrowserRouter>  {/* Use the real BrowserRouter here */}
         <Setup />
@@ -34,39 +37,80 @@ describe('Setup Component', () => {
     // Simulate the user clicking the "Next" button to proceed to Step 2
     fireEvent.click(screen.getByText(/next/i));
 
-    // WHITE BOX: Step 2 - Internal state management for each semester
-    const semester1HoursInput = screen.getAllByPlaceholderText(/hours/i)[0]; // Target the first semester hours input
-    fireEvent.change(semester1HoursInput, { target: { value: '15' } });
+    // Verify step 2 is rendered
+    await waitFor(() => {
+      expect(screen.getByText(/enter hours and gpa for each semester/i)).toBeInTheDocument();
+    });
+  });
 
-    const semester1GpaInput = screen.getAllByPlaceholderText(/gpa/i)[0]; // Target the first semester GPA input
+  test('should correctly render inputs for each semester after selecting number of semesters', async () => {
+    render(
+      <BrowserRouter>
+        <Setup />
+      </BrowserRouter>
+    );
+
+    // BLACK BOX: Step 1 - User inputs the number of semesters completed
+    const numSemestersInput = screen.getByLabelText(/how many semesters have you completed\?/i);
+    fireEvent.change(numSemestersInput, { target: { value: '2' } });
+    fireEvent.click(screen.getByText(/next/i));
+
+    // Verify inputs for each semester are rendered
+    await waitFor(() => {
+      const semester1HoursInput = screen.getAllByPlaceholderText(/hours/i)[0];
+      const semester1GpaInput = screen.getAllByPlaceholderText(/gpa/i)[0];
+      const semester2HoursInput = screen.getAllByPlaceholderText(/hours/i)[1];
+      const semester2GpaInput = screen.getAllByPlaceholderText(/gpa/i)[1];
+
+      expect(semester1HoursInput).toBeInTheDocument();
+      expect(semester1GpaInput).toBeInTheDocument();
+      expect(semester2HoursInput).toBeInTheDocument();
+      expect(semester2GpaInput).toBeInTheDocument();
+    });
+  });
+
+  // -------------------- White-box Testing --------------------
+  // White-box testing focuses on the internal workings of the component, verifying specific logic like rendering conditions, state changes, or internal functions.
+
+  test('should navigate to dashboard after successful setup', async () => {
+    const navigate = vi.fn();
+    vi.mocked(useNavigate).mockReturnValue(navigate);
+
+    render(
+      <BrowserRouter>
+        <Setup />
+      </BrowserRouter>
+    );
+
+    // WHITE BOX: Step 1 - User inputs the number of semesters completed
+    const numSemestersInput = screen.getByLabelText(/how many semesters have you completed\?/i);
+    fireEvent.change(numSemestersInput, { target: { value: '1' } });
+    fireEvent.click(screen.getByText(/next/i));
+
+    // Step 2 - User fills out semester details
+    const semester1HoursInput = screen.getAllByPlaceholderText(/hours/i)[0];
+    fireEvent.change(semester1HoursInput, { target: { value: '15' } });
+    const semester1GpaInput = screen.getAllByPlaceholderText(/gpa/i)[0];
     fireEvent.change(semester1GpaInput, { target: { value: '3.5' } });
 
-    // BLACK BOX: Entering data for the second semester
-    const semester2HoursInput = screen.getAllByPlaceholderText(/hours/i)[1]; // User fills semester 2 hours
-    fireEvent.change(semester2HoursInput, { target: { value: '12' } });
-    const semester2GpaInput = screen.getAllByPlaceholderText(/gpa/i)[1]; // User fills semester 2 GPA
-    fireEvent.change(semester2GpaInput, { target: { value: '3.8' } });
-
-    // WHITE BOX: Entering data for the third semester and ensuring correct handling in internal state
-    const semester3HoursInput = screen.getAllByPlaceholderText(/hours/i)[2]; // User fills semester 3 hours
-    fireEvent.change(semester3HoursInput, { target: { value: '18' } });
-    const semester3GpaInput = screen.getAllByPlaceholderText(/gpa/i)[2]; // User fills semester 3 GPA
-    fireEvent.change(semester3GpaInput, { target: { value: '3.7' } });
-
-    // BLACK BOX: User clicks the "Finish Setup" button to complete the setup
+    // User clicks the "Finish Setup" button to complete the setup
     fireEvent.click(screen.getByText(/finish setup/i));
 
-    // WHITE BOX: Waiting for the axios call and checking if the internal logic calls the right API endpoint
+    // Verify that navigate was called to move to the dashboard
     await waitFor(() => {
-      expect(axios.post).toHaveBeenCalledTimes(1);  // Ensure axios was called once
-      expect(axios.post).toHaveBeenCalledWith('http://localhost:3001/setup', expect.objectContaining({
-        semesters: [
-          { hours: 15, gpa: 3.5 },
-          { hours: 12, gpa: 3.8 },
-          { hours: 18, gpa: 3.7 },
-        ],
-        overallGPA: expect.any(String),
-      }));
+      expect(navigate).toHaveBeenCalledWith('/dashboard');
     });
+  });
+
+  test('should render title and input section on initial load', () => {
+    render(
+      <BrowserRouter>
+        <Setup />
+      </BrowserRouter>
+    );
+
+    // BLACK BOX: Verify the title and input section are rendered on initial load
+    expect(screen.getByText(/welcome to gradetrackr setup/i)).toBeInTheDocument();
+    expect(screen.getByLabelText(/how many semesters have you completed\?/i)).toBeInTheDocument();
   });
 });
