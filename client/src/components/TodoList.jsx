@@ -3,6 +3,8 @@ import React, { useState, useEffect } from "react";
 import axios from "axios";
 import "../styles/TodoList.css";
 
+const apiUrl = import.meta.env.VITE_API_URL;
+
 function TodoList() {
   const [tasks, setTasks] = useState([]);
   const [newTask, setNewTask] = useState("");
@@ -10,7 +12,7 @@ function TodoList() {
 
   useEffect(() => {
     axios
-      .get(`http://localhost:3001/user/${userId}/tasks`)
+      .get(`${apiUrl}/user/${userId}/tasks`)
       .then((response) => {
         setTasks(response.data);
       })
@@ -21,7 +23,7 @@ function TodoList() {
     if (newTask.trim()) {
       const task = { text: newTask };
       axios
-        .post(`http://localhost:3001/user/${userId}/tasks`, task)
+        .post(`${apiUrl}/user/${userId}/tasks`, task)
         .then((response) => {
           setTasks([...tasks, response.data]);
           setNewTask("");
@@ -33,7 +35,7 @@ function TodoList() {
   // Delete a task
   const handleTaskDelete = (taskId) => {
     axios
-      .delete(`http://localhost:3001/user/${userId}/tasks/${taskId}`)
+      .delete(`${apiUrl}/user/${userId}/tasks/${taskId}`)
       .then(() => {
         setTasks((prevTasks) =>
           prevTasks.filter((task) => task._id !== taskId)

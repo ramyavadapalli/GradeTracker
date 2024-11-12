@@ -5,6 +5,8 @@ import axios from "axios";
 import Navbar from "./Navbar"; // Import Navbar
 import Footer from "./Footer"; // Import Footer
 
+const apiUrl = import.meta.env.VITE_API_URL;
+
 function Setup() {
   const [numSemesters, setNumSemesters] = useState("");
   const [semesterData, setSemesterData] = useState([]);
@@ -44,7 +46,7 @@ function Setup() {
     };
 
     axios
-      .post("http://localhost:3001/setup", data)
+      .post(`${apiUrl}/setup`, data)
       .then(() => {
         navigate("/dashboard");
       })
@@ -54,7 +56,6 @@ function Setup() {
   return (
     <>
       <Navbar /> {/* Navbar at the top */}
-      
       <div className="setup-container">
         <h1 className="title">Welcome to GradeTrackr Setup</h1>
 
@@ -130,7 +131,6 @@ function Setup() {
           </div>
         )}
       </div>
-
       <Footer /> {/* Footer at the bottom */}
     </>
   );

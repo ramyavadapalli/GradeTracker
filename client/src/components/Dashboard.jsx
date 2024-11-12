@@ -1,14 +1,29 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
 import { Bar } from "react-chartjs-2";
-import { Chart as ChartJS, CategoryScale, LinearScale, BarElement, Title, Tooltip, Legend } from "chart.js";
+import {
+  Chart as ChartJS,
+  CategoryScale,
+  LinearScale,
+  BarElement,
+  Title,
+  Tooltip,
+  Legend,
+} from "chart.js";
 import { useNavigate } from "react-router-dom";
 import "../styles/Dashboard.css";
 import Footer from "../components/Footer";
 import Navbar from "../components/Navbar";
 import TodoList from "../components/TodoList"; // Import TodoList
 
-ChartJS.register(CategoryScale, LinearScale, BarElement, Title, Tooltip, Legend);
+ChartJS.register(
+  CategoryScale,
+  LinearScale,
+  BarElement,
+  Title,
+  Tooltip,
+  Legend
+);
 
 function Dashboard() {
   const [userData, setUserData] = useState(null);
@@ -21,8 +36,10 @@ function Dashboard() {
       navigate("/login");
       return;
     }
+    const apiUrl = import.meta.env.VITE_API_URL;
+
     axios
-      .get(`http://localhost:3001/user/${userId}`)
+      .get(`${apiUrl}/user/${userId}`)
       .then((response) => {
         setUserData(response.data);
         if (!response.data.hasCompletedSetup) {
@@ -32,7 +49,7 @@ function Dashboard() {
       .catch((error) => console.error("Error fetching user data:", error));
 
     axios
-      .get(`http://localhost:3001/user/${userId}/gpa-goals`)
+      .get(`${apiUrl}/user/${userId}/gpa-goals`)
       .then((response) => {
         setGpaGoals(response.data);
       })
@@ -73,8 +90,13 @@ function Dashboard() {
 
         <div className="dashboard-sidebar">
           <h3>Cumulative GPA: {overallGPA}</h3>
-          <p><strong>Semester Goal:</strong> {gpaGoals.semesterGoal || "Not set"}</p>
-          <p><strong>Cumulative Goal:</strong> {gpaGoals.cumulativeGoal || "Not set"}</p>
+          <p>
+            <strong>Semester Goal:</strong> {gpaGoals.semesterGoal || "Not set"}
+          </p>
+          <p>
+            <strong>Cumulative Goal:</strong>{" "}
+            {gpaGoals.cumulativeGoal || "Not set"}
+          </p>
           <ul>
             <li onClick={() => navigate("/gpa-goals")}>
               Set GPA Goals <span className="arrow">→</span>

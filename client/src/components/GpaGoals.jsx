@@ -5,6 +5,8 @@ import Footer from "./Footer"; // Import Footer
 import axios from "axios";
 import "../styles/GpaGoals.css"; // Import CSS for styling
 
+const apiUrl = import.meta.env.VITE_API_URL;
+
 const GpaGoals = () => {
   const [semesterGoal, setSemesterGoal] = useState("");
   const [cumulativeGoal, setCumulativeGoal] = useState("");
@@ -13,7 +15,7 @@ const GpaGoals = () => {
 
   useEffect(() => {
     axios
-      .get(`http://localhost:3001/user/${userId}/gpa-goals`)
+      .get(`${apiUrl}/user/${userId}/gpa-goals`)
       .then((response) => {
         setSemesterGoal(response.data.semesterGoal || "");
         setCumulativeGoal(response.data.cumulativeGoal || "");
@@ -25,7 +27,7 @@ const GpaGoals = () => {
     e.preventDefault();
     if (semesterGoal && cumulativeGoal) {
       axios
-        .post(`http://localhost:3001/user/${userId}/gpa-goals`, {
+        .post(`${apiUrl}/user/${userId}/gpa-goals`, {
           semesterGoal,
           cumulativeGoal,
         })

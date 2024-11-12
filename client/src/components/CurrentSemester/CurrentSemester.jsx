@@ -13,8 +13,9 @@ const CurrentSemester = () => {
   const userId = localStorage.getItem("userId");
 
   useEffect(() => {
+    const apiUrl = `${import.meta.env.VITE_API_URL}/user/${userId}/courses`;
     axios
-      .get(`http://localhost:3001/user/${userId}/courses`)
+      .get(apiUrl)
       .then((response) => setCourses(response.data))
       .catch((error) => console.error("Error fetching courses:", error));
   }, [userId]);
@@ -25,10 +26,11 @@ const CurrentSemester = () => {
     courses.forEach((course) => {
       course.sections.forEach((section) => {
         if (section.assignments && section.assignments.length > 0) {
-          const sectionGrade = section.assignments.reduce(
-            (sum, assignment) => sum + parseFloat(assignment.grade || 0),
-            0
-          ) / section.assignments.length;
+          const sectionGrade =
+            section.assignments.reduce(
+              (sum, assignment) => sum + parseFloat(assignment.grade || 0),
+              0
+            ) / section.assignments.length;
           weightedGrades += (sectionGrade * section.weight) / 100;
           totalWeight += section.weight;
         }

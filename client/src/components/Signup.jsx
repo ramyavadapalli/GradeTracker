@@ -4,6 +4,8 @@ import axios from "axios";
 import Footer from "./Footer"; // Import Footer
 import Navbar from "./Navbar"; // Import Navbar
 
+const apiUrl = import.meta.env.VITE_API_URL;
+
 function Signup() {
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
@@ -13,7 +15,7 @@ function Signup() {
   const handleSubmit = (e) => {
     e.preventDefault();
     axios
-      .post("http://localhost:3001/signup", { name, email, password })
+      .post(`${apiUrl}/signup`, { name, email, password }) // Use apiUrl for the base URL
       .then((result) => {
         if (result.data && result.data._id) {
           localStorage.setItem("userId", result.data._id);

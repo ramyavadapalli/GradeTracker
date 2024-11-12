@@ -4,6 +4,8 @@ import axios from "axios";
 import Footer from "./Footer"; // Import Footer
 import Navbar from "./Navbar"; // Import Navbar
 
+const apiUrl = import.meta.env.VITE_API_URL;
+
 function Login() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -13,7 +15,7 @@ function Login() {
     e.preventDefault();
 
     axios
-      .post("http://localhost:3001/login", { email, password })
+      .post(`${apiUrl}/login`, { email, password })
       .then((result) => {
         console.log("Login response:", result);
         if (result.data.message === "Success") {
@@ -29,7 +31,7 @@ function Login() {
             navigate("/setup");
           }
         } else {
-          alert(result.data); // show error message from server
+          alert(result.data);
         }
       })
       .catch((error) => console.log("Error during login:", error));

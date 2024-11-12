@@ -11,33 +11,33 @@ const CourseForm = ({ course, onSave, onCancel }) => {
 
   const handleSave = () => {
     const courseData = { name, hours, sections };
+    const apiUrl = `${import.meta.env.VITE_API_URL}/user/${userId}/courses`;
     const request = course
-      ? axios.put(
-          `http://localhost:3001/user/${userId}/courses/${course._id}`,
-          courseData
-        )
-      : axios.post(`http://localhost:3001/user/${userId}/courses`, courseData);
+      ? axios.put(`${apiUrl}/${course._id}`, courseData)
+      : axios.post(apiUrl, courseData);
 
     request.then((response) => onSave(response.data));
   };
 
   const handleDeleteSection = (sectionIndex) => {
-    const updatedSections = sections.filter((_, index) => index !== sectionIndex);
+    const updatedSections = sections.filter(
+      (_, index) => index !== sectionIndex
+    );
     setSections(updatedSections);
   };
 
   const handleDeleteAssignment = (sectionIndex, assignmentIndex) => {
     const updatedSections = [...sections];
-    updatedSections[sectionIndex].assignments = updatedSections[sectionIndex].assignments.filter(
-      (_, index) => index !== assignmentIndex
-    );
+    updatedSections[sectionIndex].assignments = updatedSections[
+      sectionIndex
+    ].assignments.filter((_, index) => index !== assignmentIndex);
     setSections(updatedSections);
   };
 
   return (
     <div className="course-form">
       <h3>{course ? "Edit Course" : "Add a Course"}</h3>
-      
+
       <div className="form-group">
         <label>Course Name:</label>
         <input

@@ -5,6 +5,7 @@ import "../styles/EditSemesters.css";
 import Footer from "../components/Footer";
 import Navbar from "../components/Navbar";
 
+const apiUrl = import.meta.env.VITE_API_URL;
 function EditSemesters() {
   const [semesters, setSemesters] = useState([]);
   const userId = localStorage.getItem("userId");
@@ -12,7 +13,7 @@ function EditSemesters() {
 
   useEffect(() => {
     axios
-      .get(`http://localhost:3001/user/${userId}`)
+      .get(`${apiUrl}/user/${userId}`)
       .then((response) => {
         setSemesters(response.data.semesters);
       })
@@ -60,7 +61,7 @@ function EditSemesters() {
     };
 
     axios
-      .post("http://localhost:3001/setup", data)
+      .post(`${apiUrl}/setup`, data)
       .then((response) => {
         console.log(response.data);
         navigate("/dashboard");
@@ -71,11 +72,11 @@ function EditSemesters() {
   return (
     <>
       <Navbar /> {/* Navbar outside main content */}
-  
       <div className="edit-semesters-container">
-        <div className="form-container"> {/* Add this wrapper */}
+        <div className="form-container">
+          {" "}
+          {/* Add this wrapper */}
           <h2>Edit Your Semesters</h2>
-  
           {semesters.length === 0 ? (
             <p>No semesters found. Please add some semesters to edit.</p>
           ) : (
@@ -130,12 +131,12 @@ function EditSemesters() {
               </button>
             </form>
           )}
-        </div> {/* Close wrapper */}
+        </div>{" "}
+        {/* Close wrapper */}
       </div>
-  
       <Footer /> {/* Footer outside main content */}
     </>
-  );  
+  );
 }
 
 export default EditSemesters;
