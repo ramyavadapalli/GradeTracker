@@ -5,8 +5,6 @@ import axios from "axios";
 import Navbar from "./Navbar"; // Import Navbar
 import Footer from "./Footer"; // Import Footer
 
-const apiUrl = import.meta.env.VITE_API_URL;
-
 function Setup() {
   const [numSemesters, setNumSemesters] = useState("");
   const [semesterData, setSemesterData] = useState([]);
@@ -46,7 +44,7 @@ function Setup() {
     };
 
     axios
-      .post(`${apiUrl}/setup`, data)
+      .post("http://localhost:3001/setup", data)
       .then(() => {
         navigate("/dashboard");
       })

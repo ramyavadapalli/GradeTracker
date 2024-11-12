@@ -1,47 +1,21 @@
 // src/components/TodoList.jsx
-import React, { useState, useEffect } from "react";
-import axios from "axios";
+// src/components/TodoList.jsx
+import React, { useState } from "react";
 import "../styles/TodoList.css";
-
-const apiUrl = import.meta.env.VITE_API_URL;
 
 function TodoList() {
   const [tasks, setTasks] = useState([]);
   const [newTask, setNewTask] = useState("");
-  const userId = localStorage.getItem("userId");
-
-  useEffect(() => {
-    axios
-      .get(`${apiUrl}/user/${userId}/tasks`)
-      .then((response) => {
-        setTasks(response.data);
-      })
-      .catch((error) => console.error("Error fetching tasks:", error));
-  }, [userId]);
 
   const handleAddTask = () => {
     if (newTask.trim()) {
-      const task = { text: newTask };
-      axios
-        .post(`${apiUrl}/user/${userId}/tasks`, task)
-        .then((response) => {
-          setTasks([...tasks, response.data]);
-          setNewTask("");
-        })
-        .catch((error) => console.error("Error adding task:", error));
+      setTasks([...tasks, { text: newTask, completed: false }]);
+      setNewTask("");
     }
   };
 
-  // Delete a task
-  const handleTaskDelete = (taskId) => {
-    axios
-      .delete(`${apiUrl}/user/${userId}/tasks/${taskId}`)
-      .then(() => {
-        setTasks((prevTasks) =>
-          prevTasks.filter((task) => task._id !== taskId)
-        );
-      })
-      .catch((error) => console.error("Error deleting task:", error));
+  const handleTaskDelete = (index) => {
+    setTasks((prevTasks) => prevTasks.filter((_, i) => i !== index));
   };
 
   return (
@@ -60,11 +34,11 @@ function TodoList() {
         </button>
       </div>
       <ul className="tasks-list">
-        {tasks.map((task) => (
-          <li key={task._id} className="task-item">
+        {tasks.map((task, index) => (
+          <li key={index} className="task-item">
             <span className="task-text">{task.text}</span>
             <button
-              onClick={() => handleTaskDelete(task._id)}
+              onClick={() => handleTaskDelete(index)}
               className="delete-task-button"
             >
               Delete

@@ -11,10 +11,12 @@ const CourseForm = ({ course, onSave, onCancel }) => {
 
   const handleSave = () => {
     const courseData = { name, hours, sections };
-    const apiUrl = `${import.meta.env.VITE_API_URL}/user/${userId}/courses`;
     const request = course
-      ? axios.put(`${apiUrl}/${course._id}`, courseData)
-      : axios.post(apiUrl, courseData);
+      ? axios.put(
+          `http://localhost:3001/user/${userId}/courses/${course._id}`,
+          courseData
+        )
+      : axios.post(`http://localhost:3001/user/${userId}/courses`, courseData);
 
     request.then((response) => onSave(response.data));
   };

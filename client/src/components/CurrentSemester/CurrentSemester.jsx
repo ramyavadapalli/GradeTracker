@@ -13,9 +13,8 @@ const CurrentSemester = () => {
   const userId = localStorage.getItem("userId");
 
   useEffect(() => {
-    const apiUrl = `${import.meta.env.VITE_API_URL}/user/${userId}/courses`;
     axios
-      .get(apiUrl)
+      .get(`http://localhost:3001/user/${userId}/courses`)
       .then((response) => setCourses(response.data))
       .catch((error) => console.error("Error fetching courses:", error));
   }, [userId]);

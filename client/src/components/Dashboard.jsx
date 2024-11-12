@@ -36,10 +36,8 @@ function Dashboard() {
       navigate("/login");
       return;
     }
-    const apiUrl = import.meta.env.VITE_API_URL;
-
     axios
-      .get(`${apiUrl}/user/${userId}`)
+      .get(`http://localhost:3001/user/${userId}`)
       .then((response) => {
         setUserData(response.data);
         if (!response.data.hasCompletedSetup) {
@@ -49,7 +47,7 @@ function Dashboard() {
       .catch((error) => console.error("Error fetching user data:", error));
 
     axios
-      .get(`${apiUrl}/user/${userId}/gpa-goals`)
+      .get(`http://localhost:3001/user/${userId}/gpa-goals`)
       .then((response) => {
         setGpaGoals(response.data);
       })

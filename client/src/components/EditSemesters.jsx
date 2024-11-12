@@ -5,7 +5,6 @@ import "../styles/EditSemesters.css";
 import Footer from "../components/Footer";
 import Navbar from "../components/Navbar";
 
-const apiUrl = import.meta.env.VITE_API_URL;
 function EditSemesters() {
   const [semesters, setSemesters] = useState([]);
   const userId = localStorage.getItem("userId");
@@ -13,7 +12,7 @@ function EditSemesters() {
 
   useEffect(() => {
     axios
-      .get(`${apiUrl}/user/${userId}`)
+      .get(`http://localhost:3001/user/${userId}`)
       .then((response) => {
         setSemesters(response.data.semesters);
       })
@@ -61,7 +60,7 @@ function EditSemesters() {
     };
 
     axios
-      .post(`${apiUrl}/setup`, data)
+      .post("http://localhost:3001/setup", data)
       .then((response) => {
         console.log(response.data);
         navigate("/dashboard");
