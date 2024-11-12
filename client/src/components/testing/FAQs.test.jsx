@@ -65,4 +65,15 @@ describe("FAQ Component", () => {
     expect(screen.getByText("Navbar Mock")).toBeInTheDocument();
     expect(screen.getByText("Footer Mock")).toBeInTheDocument();
   });
+
+  // Failing test case: This test case checks if the feedback form submission is being delivered to the admin
+  test("fails to deliver feedback form submission to admin", () => {
+    render(<FAQ />);
+
+    // Assuming there is a button that sends the feedback
+    fireEvent.click(screen.getByText("Submit Feedback"));
+
+    // Expected failure: Feedback is not being delivered to the admin
+    expect(screen.queryByText("Feedback has been delivered to the admin successfully")).not.toBeInTheDocument();
+  });
 });

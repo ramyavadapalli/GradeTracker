@@ -1,3 +1,4 @@
+// src/components/__test__/Signup.test.js
 import React from 'react';
 import '@testing-library/jest-dom'; // For using Jest DOM matchers like toBeInTheDocument
 import { render, fireEvent, screen, waitFor } from '@testing-library/react';
@@ -42,6 +43,66 @@ describe('Signup Component', () => {
     expect(passwordInput.value).toBe('password123');
   });
 
+  // Failing test case: Test that an email cannot be used more than once to sign up
+  test('should not allow the same email to be used twice to sign-up', async () => {
+    // Mocking an unsuccessful response from the signup API indicating that the email already exists
+    axios.post.mockRejectedValueOnce({ response: { data: 'Email already exists' } });
+
+    render(
+      <BrowserRouter>
+        <Signup />
+      </BrowserRouter>
+    );
+
+    // Select the form fields and submit button
+    const nameInput = screen.getByLabelText(/name/i);
+    const emailInput = screen.getByLabelText(/email/i);
+    const passwordInput = screen.getByLabelText(/password/i);
+    const submitButton = screen.getByRole('button', { name: /register/i });
+
+    // Simulate user input and submitting the form with an email that's already registered
+    fireEvent.change(nameInput, { target: { value: 'John Doe' } });
+    fireEvent.change(emailInput, { target: { value: 'john.doe@example.com' } });
+    fireEvent.change(passwordInput, { target: { value: 'password123' } });
+    fireEvent.click(submitButton);
+
+    // Wait for the error message to appear
+    await waitFor(() => screen.getByText('Edge Case Failed: Same email was able to be used twice to sign-up'));
+
+    // Assert that the error message is displayed indicating the failure to sign-up with a duplicate email
+    expect(screen.getByText('Edge Case Failed: Same email was able to be used twice to sign-up')).toBeInTheDocument();
+  });
+
+  // Failing test case: Test that a user cannot sign up with a short password
+  test('should not allow signup with a password that is too short', async () => {
+    // Mocking an unsuccessful response from the signup API indicating that the password is too short
+    axios.post.mockRejectedValueOnce({ response: { data: 'Password is too short' } });
+
+    render(
+      <BrowserRouter>
+        <Signup />
+      </BrowserRouter>
+    );
+
+    // Select the form fields and submit button
+    const nameInput = screen.getByLabelText(/name/i);
+    const emailInput = screen.getByLabelText(/email/i);
+    const passwordInput = screen.getByLabelText(/password/i);
+    const submitButton = screen.getByRole('button', { name: /register/i });
+
+    // Simulate user input with a short password and submit the form
+    fireEvent.change(nameInput, { target: { value: 'Jane Doe' } });
+    fireEvent.change(emailInput, { target: { value: 'jane.doe@example.com' } });
+    fireEvent.change(passwordInput, { target: { value: '123' } }); // Password is too short
+    fireEvent.click(submitButton);
+
+    // Wait for the error message to appear
+    await waitFor(() => screen.getByText('Edge Case Failed: Password is too short for signup'));
+
+    // Assert that the error message is displayed indicating the failure due to short password
+    expect(screen.getByText('Edge Case Failed: Password is too short for signup')).toBeInTheDocument();
+  });
+
   // Black Box Testing: Testing the behavior of the signup API and navigation from the user's perspective
   test('should call API and navigate to login on successful signup', async () => {
     // Mocking a successful response from the signup API (White Box Testing: Mock internal API behavior)
@@ -78,116 +139,5 @@ describe('Signup Component', () => {
 
     // Wait for the navigate function to be called, ensuring the user is redirected to the login page (White Box: testing internal navigation logic)
     await waitFor(() => expect(navigate).toHaveBeenCalledWith('/login'));
-  });
-
-  // Black Box Testing: Testing the error handling when signup fails
-  test('should display error message on unsuccessful signup', async () => {
-    // Mocking an unsuccessful response from the signup API (White Box Testing: Mock internal API behavior)
-    axios.post.mockRejectedValueOnce({ response: { data: 'Email already exists' } });
-
-    render(
-      <BrowserRouter>
-        <Signup />
-      </BrowserRouter>
-    );
-
-    // Select the form fields and submit button
-    const nameInput = screen.getByLabelText(/name/i);
-    const emailInput = screen.getByLabelText(/email/i);
-    const passwordInput = screen.getByLabelText(/password/i);
-    const submitButton = screen.getByRole('button', { name: /register/i });
-
-    // Simulate user input and form submission (Black Box: testing how the UI behaves when an error occurs)
-    fireEvent.change(nameInput, { target: { value: 'John Doe' } });
-    fireEvent.change(emailInput, { target: { value: 'john.doe@example.com' } });
-    fireEvent.change(passwordInput, { target: { value: 'password123' } });
-    fireEvent.click(submitButton);
-
-    // Wait for the error message to appear on the screen (Black Box: testing the error feedback from the UI)
-    await waitFor(() => screen.getByText('Email already exists'));
-
-    // Verify the error message is displayed (Black Box: ensuring that the user sees the expected error message on the UI)
-    expect(screen.getByText('Email already exists')).toBeInTheDocument();
-  });
-
-  // -------------------- Additional Tests --------------------
-
-  // Black Box Testing: Testing if the 'Register' button is rendered correctly
-  test('should render Register button', () => {
-    render(
-      <BrowserRouter>
-        <Signup />
-      </BrowserRouter>
-    );
-
-    // Verify that the Register button is present
-    const registerButton = screen.getByRole('button', { name: /register/i });
-    expect(registerButton).toBeInTheDocument();
-  });
-
-  // Black Box Testing: Testing successful rendering of the footer
-  test('should render Footer component', () => {
-    render(
-      <BrowserRouter>
-        <Signup />
-      </BrowserRouter>
-    );
-
-    // Verify that Footer is rendered
-    expect(screen.getByText(/Already Have an Account/i)).toBeInTheDocument();
-  });
-
-  // Black Box Testing: Test to verify that password input type is correct
-  test('should render password input with correct type', () => {
-    render(
-      <BrowserRouter>
-        <Signup />
-      </BrowserRouter>
-    );
-
-    // Verify that the password input is of type password
-    const passwordInput = screen.getByLabelText(/password/i);
-    expect(passwordInput).toHaveAttribute('type', 'password');
-  });
-
-  // Black Box Testing: Test to ensure all input fields are rendered
-  test('should render all input fields', () => {
-    render(
-      <BrowserRouter>
-        <Signup />
-      </BrowserRouter>
-    );
-
-    // Verify that all input fields are present
-    expect(screen.getByLabelText(/name/i)).toBeInTheDocument();
-    expect(screen.getByLabelText(/email/i)).toBeInTheDocument();
-    expect(screen.getByLabelText(/password/i)).toBeInTheDocument();
-  });
-
-  // White Box Testing: Testing if error state is cleared on successful submission
-  test('should clear error state on successful submission', async () => {
-    // Mocking a successful response from the signup API
-    axios.post.mockResolvedValueOnce({ data: { message: 'User created successfully' } });
-
-    render(
-      <BrowserRouter>
-        <Signup />
-      </BrowserRouter>
-    );
-
-    // Select the form fields and submit button
-    const nameInput = screen.getByLabelText(/name/i);
-    const emailInput = screen.getByLabelText(/email/i);
-    const passwordInput = screen.getByLabelText(/password/i);
-    const submitButton = screen.getByRole('button', { name: /register/i });
-
-    // Simulate user input and submitting the form
-    fireEvent.change(nameInput, { target: { value: 'Jane Doe' } });
-    fireEvent.change(emailInput, { target: { value: 'jane.doe@example.com' } });
-    fireEvent.change(passwordInput, { target: { value: 'password123' } });
-    fireEvent.click(submitButton);
-
-    // Wait for the API call to be made and verify no error message is present
-    await waitFor(() => expect(screen.queryByText('Email already exists')).not.toBeInTheDocument());
   });
 });

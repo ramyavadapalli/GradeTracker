@@ -91,4 +91,21 @@ describe("Dashboard Component", () => {
     fireEvent.click(screen.getByText("Edit Previous Semesters"));
     expect(window.location.pathname).toBe("/edit-semesters");
   });
+
+  // Black box test: This test case is expected to fail because "Semester Goals" does not exist yet
+  test("fails to render 'Semester Goals' section", async () => {
+    axios.get.mockResolvedValueOnce({ data: mockUserData });
+
+    render(
+      <Router>
+        <Dashboard />
+      </Router>
+    );
+
+    // Wait for the component to fetch data and re-render
+    await waitFor(() => screen.getByText("Hi, John Doe!"));
+
+    // Check if "Semester Goals" section is rendered (this should fail since it does not exist yet)
+    expect(screen.getByText("Semester Goals")).toBeInTheDocument();
+  });
 });
