@@ -104,6 +104,67 @@ app.get("/user/:userId/gpa-goals", async (req, res) => {
   }
 });
 
+//get all courses for user
+app.get("/user/:userId/courses", async (req, res) => {
+  const { userId } = req.params;
+  try {
+    const user = await StudentModel.findById(userId).select("courses");
+    if (user) {
+      res.status(200).json(user.courses);
+    } else {
+      res.status(404).json({ message: "User not found" });
+    }
+  } catch (error) {
+    res.status(500).json({ message: "Error retriving courses" });
+  }
+});
+
+//add a new course
+app.post("/user/:userId/courses", async (req, res) => {
+  const { userId } = req.params;
+  const { name, hours, sections } = req.body;
+
+  try {
+    const user = await StudentModel.findById(userId);
+    if (user) {
+      const newCourse = { name, hours, sections };
+      user.courses.push(newCourse);
+      await user.save();
+      res.status(200).json(user.courses[user.courses.length - 1]);
+    } else {
+      res.status(404).json({ message: "User not found" });
+    }
+  } catch (error) {
+    res.status(500).json({ message: "Error adding course" });
+  }
+});
+
+//updating existing course
+app.put("/user/:userId/courses/:courseId", async (req, res) => {
+  const { userId, courseId } = req.params;
+  const { name, hours, sections } = req.body;
+
+  try {
+    const user = await StudentModel.findById(userId);
+    if (user) {
+      const course = user.courses.id(courseId);
+      if (course) {
+        course.name = name;
+        course.hours = hours;
+        course.sections = sections;
+        await user.save();
+        res.status(200).json(course);
+      } else {
+        res.status(404).json({ message: "Course not found" });
+      }
+    } else {
+      res.status(404).json({ message: "User not found" });
+    }
+  } catch (error) {
+    res.status(500).json({ message: "Error updating course" });
+  }
+});
+
 app.listen(3001, () => {
   console.log("server is running");
 });
