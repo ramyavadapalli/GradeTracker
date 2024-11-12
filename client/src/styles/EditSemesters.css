@@ -1,51 +1,116 @@
+/* Overall container for the form */
+.edit-semesters-container {
+  max-width: 800px;
+  margin: 40px auto;
+  padding: 20px;
+  background-color: #ffffff;
+  border-radius: 10px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+}
+
+/* Heading styling */
+.edit-semesters-container h2 {
+  font-size: 2rem;
+  font-weight: bold;
+  color: #00763d;
+  text-align: center;
+  margin-bottom: 20px;
+}
+
+/* Button styling for all buttons */
 .add-button,
 .delete-button,
 .save-button {
-  padding: 10px;
+  padding: 12px 18px;
+  font-size: 1.1rem;
   cursor: pointer;
-  font-size: 1.2rem;
-  border: none; /* Remove default border */
-  border-radius: 4px; /* Add border radius */
-  transition: background-color 0.2s ease; /* Smooth transition for hover */
+  border: none;
+  border-radius: 6px;
+  transition: background-color 0.3s ease;
 }
 
+/* Add button styling */
 .add-button {
-    background-color: #f1f8e9; /* Same as dashboard item */
-    margin-top: 10px; /* Small margin for spacing */
-    margin-left: 20px; /* Add margin to the left to push it right */
-  }
-  
+  background-color: #f1f8e9;
+  color: #00763d;
+  margin-top: 10px;
+  align-self: flex-start;
+}
 
 .add-button:hover {
-  background-color: #dcedc8; /* Same hover color as dashboard item */
+  background-color: #dcedc8;
 }
 
+/* Delete button styling */
 .delete-button {
-  background-color: #f1f8e9; /* Same as dashboard item */
-  margin-left: 20px; /* Add margin to the left to push it right */
-
+  background-color: #fbe9e7;
+  color: #d32f2f;
+  margin-top: 10px;
 }
 
 .delete-button:hover {
-  background-color: #dcedc8; /* Same hover color as dashboard item */
+  background-color: #ffccbc;
 }
 
+/* Save button styling */
 .save-button {
-    background-color: #f1f8e9; /* Same as dashboard item */
-    margin-top: 10px; /* Small margin for spacing */
-    margin-left: 20px; /* Add margin to the left to push it right */
-  }  
+  background-color: #00763d;
+  color: white;
+  width: 100%;
+  margin-top: 20px;
+}
 
 .save-button:hover {
-  background-color: #dcedc8; /* Same hover color as dashboard item */
+  background-color: #005f2d;
 }
 
-/* Additional margin between buttons */
-button {
-  margin-bottom: 10px; /* Space below each button */
+/* Individual semester input styling */
+.semester-input {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  background-color: #f9f9f9;
+  padding: 15px;
+  border-radius: 8px;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.05);
+  margin-bottom: 15px;
 }
 
+/* Label styling */
+.semester-input label {
+  font-size: 1rem;
+  font-weight: 600;
+  color: #333;
+  flex: 1;
+}
+
+/* Input field styling */
+.semester-input input {
+  padding: 10px;
+  font-size: 1rem;
+  border: 1px solid #ddd;
+  border-radius: 6px;
+  width: 100%;
+  max-width: 80px;
+  box-sizing: border-box;
+  transition: border-color 0.2s ease, box-shadow 0.2s ease;
+}
+
+.semester-input input:focus {
+  border-color: #00763d;
+  box-shadow: 0 0 5px rgba(0, 118, 61, 0.2);
+}
+
+/* Footer spacing */
 .footer-spacing {
-    margin-top: 400px; /* Add desired space above the footer */
-  }
-    
+  margin-top: 80px;
+}
+
+.form-container {
+  max-width: 600px;
+  margin: 0 auto;
+  padding: 20px;
+  background-color: #ffffff; /* White background */
+  border-top: 8px solid #FFD700; /* Yellow border at the top */
+  text-align: center;
+}

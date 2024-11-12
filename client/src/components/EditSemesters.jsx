@@ -1,9 +1,9 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
-import "../styles/EditSemesters.css"; // Make sure to create this CSS file
-import Footer from "../components/Footer"; // Import Footer
-import Navbar from "../components/Navbar"; // Import Navbar
+import "../styles/EditSemesters.css";
+import Footer from "../components/Footer";
+import Navbar from "../components/Navbar";
 
 function EditSemesters() {
   const [semesters, setSemesters] = useState([]);
@@ -21,7 +21,10 @@ function EditSemesters() {
 
   const handleSemesterChange = (index, field, value) => {
     const updatedSemesters = [...semesters];
-    updatedSemesters[index] = { ...updatedSemesters[index], [field]: parseFloat(value) };
+    updatedSemesters[index] = {
+      ...updatedSemesters[index],
+      [field]: parseFloat(value),
+    };
     setSemesters(updatedSemesters);
   };
 
@@ -49,78 +52,90 @@ function EditSemesters() {
   };
 
   const handleSaveChanges = () => {
-    const calculatedGPA = calculateOverallGPA(); // Calculate the overall GPA
+    const calculatedGPA = calculateOverallGPA();
     const data = {
       userId,
       semesters,
-      overallGPA: calculatedGPA, // Include the calculated GPA
+      overallGPA: calculatedGPA,
     };
 
     axios
       .post("http://localhost:3001/setup", data)
       .then((response) => {
         console.log(response.data);
-        navigate("/dashboard"); // Navigate back to the dashboard after saving
+        navigate("/dashboard");
       })
       .catch((error) => console.error("Error saving semester data: ", error));
   };
 
   return (
-    <div className="edit-semesters-container">
-      <Navbar showSignup={false} showProfile={true} /> {/* Adjust props as needed */}
-      <h2>Edit Your Semesters</h2>
-
-      {semesters.length === 0 ? (
-        <p>No semesters found. Please add some semesters to edit.</p>
-      ) : (
-        <form>
-          {semesters.map((semester, index) => (
-            <div key={index} className="semester-input">
-              <label>Semester {index + 1}</label>
-              <input
-                type="number"
-                placeholder="Hours"
-                value={semester.hours || ""}
-                min="0"
-                onChange={(e) =>
-                  handleSemesterChange(index, "hours", e.target.value)
-                }
-                required
-              />
-              <input
-                type="number"
-                placeholder="GPA"
-                value={semester.gpa || ""}
-                min="0"
-                max="4.00"
-                step="0.01"
-                onChange={(e) =>
-                  handleSemesterChange(index, "gpa", e.target.value)
-                }
-                required
-              />
+    <>
+      <Navbar /> {/* Navbar outside main content */}
+  
+      <div className="edit-semesters-container">
+        <div className="form-container"> {/* Add this wrapper */}
+          <h2>Edit Your Semesters</h2>
+  
+          {semesters.length === 0 ? (
+            <p>No semesters found. Please add some semesters to edit.</p>
+          ) : (
+            <form>
+              {semesters.map((semester, index) => (
+                <div key={index} className="semester-input">
+                  <label>Semester {index + 1}</label>
+                  <input
+                    type="number"
+                    placeholder="Hours"
+                    value={semester.hours || ""}
+                    min="0"
+                    onChange={(e) =>
+                      handleSemesterChange(index, "hours", e.target.value)
+                    }
+                    required
+                  />
+                  <input
+                    type="number"
+                    placeholder="GPA"
+                    value={semester.gpa || ""}
+                    min="0"
+                    max="4.00"
+                    step="0.01"
+                    onChange={(e) =>
+                      handleSemesterChange(index, "gpa", e.target.value)
+                    }
+                    required
+                  />
+                  <button
+                    type="button"
+                    onClick={() => handleDeleteSemester(index)}
+                    className="delete-button"
+                  >
+                    Delete Semester
+                  </button>
+                </div>
+              ))}
               <button
                 type="button"
-                onClick={() => handleDeleteSemester(index)}
-                className="delete-button"
+                onClick={handleAddSemester}
+                className="add-button"
               >
-                Delete Semester
+                Add Semester
               </button>
-            </div>
-          ))}
-          <button type="button" onClick={handleAddSemester} className="add-button">
-            Add Semester
-          </button>
-          <button type="button" onClick={handleSaveChanges} className="save-button">
-            Save Changes
-          </button>
-        </form>
-      )}
-      <div className="footer-spacing"></div>{" "}
-      {/* Add whitespace above the footer */}
-      <Footer />
-    </div>
-  );
+              <button
+                type="button"
+                onClick={handleSaveChanges}
+                className="save-button"
+              >
+                Save Changes
+              </button>
+            </form>
+          )}
+        </div> {/* Close wrapper */}
+      </div>
+  
+      <Footer /> {/* Footer outside main content */}
+    </>
+  );  
 }
 
 export default EditSemesters;
