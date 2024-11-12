@@ -36,7 +36,7 @@ function GradingSections({ courseName }) {
   };
 
   return (
-    <div className="container">
+    <div className="container" data-testid="grading-sections"> {/* Add data-testid here */}
       <h2>{courseName}</h2>
       <h3>Grading Sections Weights</h3>
 

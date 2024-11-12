@@ -1,5 +1,5 @@
 import React from "react";
-import { render, screen, fireEvent } from "@testing-library/react";
+import { render, screen, fireEvent, waitFor } from "@testing-library/react";
 import "@testing-library/jest-dom";
 import CurrentSemester from "../CurrentSemester/CurrentSemester";
 
@@ -12,9 +12,7 @@ describe("CurrentSemester Component", () => {
   test("renders the initial step with course number input", () => {
     render(<CurrentSemester />);
     expect(screen.getByText("Vanderbilt University")).toBeInTheDocument();
-    expect(
-      screen.getByPlaceholderText("Enter # of courses...")
-    ).toBeInTheDocument();
+    expect(screen.getByPlaceholderText("Enter # of courses...")).toBeInTheDocument();
     expect(screen.getByText("Next")).toBeInTheDocument();
   });
 
@@ -27,10 +25,11 @@ describe("CurrentSemester Component", () => {
     const nextButton = screen.getByText("Next");
     fireEvent.click(nextButton);
     
+    // Wait for the course detail input to appear
     expect(screen.getByText("Enter your course details")).toBeInTheDocument();
   });
 
-  test("allows entering course details on step 2", () => {
+  test("allows entering course details on step 2", async () => {
     render(<CurrentSemester />);
     
     // Step 1: Enter number of courses
@@ -48,11 +47,12 @@ describe("CurrentSemester Component", () => {
       target: { value: "3" },
     });
     
+    // Ensure the values are updated
     expect(screen.getByDisplayValue("Math 101")).toBeInTheDocument();
     expect(screen.getByDisplayValue("3")).toBeInTheDocument();
   });
 
-  test("proceeds to grading sections form on step 3", () => {
+  test("proceeds to grading sections form on step 3", async () => {
     render(<CurrentSemester />);
     
     // Step 1: Enter number of courses
@@ -70,11 +70,16 @@ describe("CurrentSemester Component", () => {
     });
     fireEvent.click(screen.getByText("Next"));
     
-    // Step 3: Grading Sections
-    expect(screen.getByTestId("grading-sections")).toBeInTheDocument();
+    // Debugging step: Add this line to check the rendered DOM at this point
+    screen.debug(); 
+
+    // Step 3: Check if GradingSections form is rendered
+    await waitFor(() => {
+      expect(screen.getByTestId("grading-sections")).toBeInTheDocument();
+    });
   });
 
-  test("navigates back to previous steps", () => {
+  test("navigates back to previous steps", async () => {
     render(<CurrentSemester />);
     
     // Step 1: Enter number of courses
@@ -83,8 +88,9 @@ describe("CurrentSemester Component", () => {
     });
     fireEvent.click(screen.getByText("Next"));
     
-    // Step 2: Back to step 1
+    // Step 2: Navigate back to step 1
     fireEvent.click(screen.getByText("Back"));
+    
     expect(screen.getByPlaceholderText("Enter # of courses...")).toBeInTheDocument();
   });
 });
