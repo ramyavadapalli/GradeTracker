@@ -6,7 +6,7 @@ import { FaYoutube, FaTwitter, FaLinkedin, FaInstagram } from "react-icons/fa"; 
 
 const Footer = () => {
   return (
-    <footer className="footer">
+  <footer data-testid="footer">
       {/* Left section with social media icons */}
       <div className="leftSection">
         <h2 className="logo">GRADETRACKR</h2>
