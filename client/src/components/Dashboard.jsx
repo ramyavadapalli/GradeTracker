@@ -1,30 +1,14 @@
-// src/components/Dashboard.jsx
 import React, { useState, useEffect } from "react";
 import axios from "axios";
 import { Bar } from "react-chartjs-2";
-import {
-  Chart as ChartJS,
-  CategoryScale,
-  LinearScale,
-  BarElement,
-  Title,
-  Tooltip,
-  Legend,
-} from "chart.js";
+import { Chart as ChartJS, CategoryScale, LinearScale, BarElement, Title, Tooltip, Legend } from "chart.js";
 import { useNavigate } from "react-router-dom";
 import "../styles/Dashboard.css";
-import Footer from "../components/Footer"; // Import Footer
-import Navbar from "../components/Navbar"; // Import Navbar
+import Footer from "../components/Footer";
+import Navbar from "../components/Navbar";
+import TodoList from "../components/TodoList"; // Import TodoList
 
-// Register the chart components
-ChartJS.register(
-  CategoryScale,
-  LinearScale,
-  BarElement,
-  Title,
-  Tooltip,
-  Legend
-);
+ChartJS.register(CategoryScale, LinearScale, BarElement, Title, Tooltip, Legend);
 
 function Dashboard() {
   const [userData, setUserData] = useState(null);
@@ -47,7 +31,6 @@ function Dashboard() {
       })
       .catch((error) => console.error("Error fetching user data:", error));
 
-    //fetch gpa goals
     axios
       .get(`http://localhost:3001/user/${userId}/gpa-goals`)
       .then((response) => {
@@ -57,12 +40,11 @@ function Dashboard() {
   }, [navigate]);
 
   if (!userData) {
-    return <div className="loading">Loading...</div>; // Add loading class
+    return <div className="loading">Loading...</div>;
   }
 
   const { name, semesters, overallGPA } = userData;
 
-  // Prepare chart data for GPA
   const gpaData = {
     labels: semesters.map((_, index) => `Semester ${index + 1}`),
     datasets: [
@@ -76,13 +58,9 @@ function Dashboard() {
 
   return (
     <div className="dashboard-container">
-      {/* Navbar at the top */}
-      <Navbar showSignup={false} showProfile={true} />{" "}
-      {/* Adjust props as needed */}
-      {/* Greeting Section */}
+      <Navbar showSignup={false} showProfile={true} />
       <h2 className="greeting">Hi, {name}!</h2>
       <div className="dashboard-row">
-        {/* Left side - GPA Trend Chart */}
         <div className="dashboard-chart">
           <h2>Overall GPA Trend</h2>
           <div className="bar-chart">
@@ -90,17 +68,13 @@ function Dashboard() {
           </div>
         </div>
 
-        {/* Middle section - Recent Activity */}
-        <div className="recent-activity">
-          <h4>Recent Activity</h4>
-          <p>No recent activity yet.</p> {/* Placeholder text */}
-        </div>
+        {/* Replace Recent Activity with To-Do List */}
+        <TodoList />
 
-        {/* Right side - Cumulative GPA Sidebar */}
         <div className="dashboard-sidebar">
           <h3>Cumulative GPA: {overallGPA}</h3>
-          <p>Semester Goal: {gpaGoals.semesterGoal || "Not set"}</p>
-          <p>Cumulative Goal: {gpaGoals.cumulativeGoal || "Not set"}</p>
+          <p><strong>Semester Goal:</strong> {gpaGoals.semesterGoal || "Not set"}</p>
+          <p><strong>Cumulative Goal:</strong> {gpaGoals.cumulativeGoal || "Not set"}</p>
           <ul>
             <li onClick={() => navigate("/gpa-goals")}>
               Set GPA Goals <span className="arrow">→</span>
@@ -114,8 +88,7 @@ function Dashboard() {
           </ul>
         </div>
       </div>
-      <div className="footer-spacing"></div>{" "}
-      {/* Add whitespace above the footer */}
+      <div className="footer-spacing"></div>
       <Footer />
     </div>
   );
