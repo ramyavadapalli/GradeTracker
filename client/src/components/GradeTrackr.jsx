@@ -1,6 +1,6 @@
 // components/GradeTrackr.jsx
-import { useState } from 'react';
-import styles from '../styles/GradeTrackr.css'; // Correct CSS import
+import React, { useState } from 'react';  // Import React explicitly
+import styles from '../styles/GradeTrackr.css';
 
 export default function GradeTrackr() {
   const [numSemesters, setNumSemesters] = useState('');
@@ -33,8 +33,9 @@ export default function GradeTrackr() {
 
       {step === 1 && (
         <div className={styles.inputSection}>
-          <label>How many semesters have you completed?</label>
+          <label htmlFor="numSemesters">How many semesters have you completed?</label>
           <input
+            id="numSemesters" // Add id here
             type="number"
             className={styles.inputField}
             value={numSemesters}
@@ -64,8 +65,9 @@ export default function GradeTrackr() {
           <h2>Enter hours and GPA for each semester</h2>
           {semesterData.map((_, index) => (
             <div key={index} className={styles.semesterInput}>
-              <label>Semester {index + 1}</label>
+              <label htmlFor={`hours-${index}`}>Semester {index + 1} Hours</label>
               <input
+                id={`hours-${index}`} // Add unique id for each input
                 type="number"
                 className={styles.inputField}
                 placeholder="Hours"
@@ -75,7 +77,9 @@ export default function GradeTrackr() {
                 }
                 required
               />
+              <label htmlFor={`gpa-${index}`}>Semester {index + 1} GPA</label>
               <input
+                id={`gpa-${index}`} // Add unique id for each input
                 type="number"
                 className={styles.inputField}
                 step="0.01"
