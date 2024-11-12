@@ -1,0 +1,61 @@
+/* Main Navbar Container */
+.navbar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 15px 30px; /* Balanced padding */
+  width: 100%; /* Full width of the viewport */
+  background-color: #f1f8e9; /* Light green background */
+  color: #00763d; /* Green text color */
+  box-shadow: 0px 2px 10px rgba(0, 0, 0, 0.1); /* Shadow for depth */
+  box-sizing: border-box; /* Ensures padding doesn’t affect width */
+}
+
+/* Logo Section (Left) */
+.logoSection {
+  display: flex;
+  align-items: center;
+}
+
+.logo {
+  height: 24px; /* Adjust height of the logo */
+  margin-right: 10px; /* Space between logo and brand name */
+}
+
+.brandName {
+  color: #00763d; /* Same color as other navbar elements */
+  font-size: 20px; /* Font size for brand name */
+  font-weight: bold; /* Bold for emphasis */
+  text-decoration: none; /* Remove underline */
+}
+
+/* Right Section (Sign Up, Sign In, Logout) */
+.rightSection {
+  display: flex;
+  align-items: center;
+}
+
+/* Common Button Styles */
+.signupButton,
+.signinButton,
+.logoutButton {
+  color: #00763d; /* Text color */
+  font-weight: bold;
+  text-decoration: none; /* Remove underline */
+  font-size: 16px;
+  margin-left: 15px; /* Space between buttons */
+  background-color: transparent;
+  border: 2px solid #00763d; /* Border color */
+  padding: 8px 16px; /* Padding for balanced look */
+  border-radius: 5px; /* Rounded corners */
+  cursor: pointer; /* Pointer cursor */
+  transition: background-color 0.3s ease, color 0.3s ease; /* Smooth transition */
+}
+
+/* Hover Effect */
+.signupButton:hover,
+.signinButton:hover,
+.logoutButton:hover {
+  background-color: #00763d; /* Dark green background */
+  color: white; /* White text on hover */
+}

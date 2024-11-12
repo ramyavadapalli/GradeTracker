@@ -1,0 +1,82 @@
+/* styles/GpaGoals.css */
+
+.gpaGoals-container {
+  max-width: 600px;
+  margin: 40px auto; /* Reduced margin for a tighter fit */
+  padding: 0; /* Removed padding from the container */
+  text-align: left; /* Left-aligned for a cleaner look */
+}
+
+.gpaGoals-title {
+  font-size: 28px;
+  font-weight: bold;
+  color: #00763d;
+  margin-bottom: 20px;
+  text-align: center;
+  padding-top: 20px; /* Add spacing at the top */
+}
+
+.gpaGoals-form {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  padding: 20px;
+  background-color: #ffffff;
+  border-top: 8px solid #FFD700;
+  border-radius: 10px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  max-width: 400px; /* Fixed width for consistent layout */
+  margin: 0 auto; /* Center align */
+}
+
+.gpaGoals-form-group {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+}
+
+.gpaGoals-form-group label {
+  font-size: 18px; /* Larger label text */
+  font-weight: 500;
+  color: #333;
+}
+
+/* Input fields with consistent width */
+.gpaGoals-input {
+  padding: 15px; /* Increased padding for larger height */
+  font-size: 18px; /* Larger font for easier readability */
+  border: 1px solid #ddd;
+  border-radius: 5px;
+  width: 100%; /* Ensures the input takes the full width of the container */
+  box-sizing: border-box;
+  transition: border-color 0.3s, box-shadow 0.3s;
+}
+
+.gpaGoals-input:focus {
+  outline: none;
+  border-color: #00763d;
+  box-shadow: 0 0 5px rgba(0, 118, 61, 0.5);
+}
+
+.gpaGoals-submit-button {
+  padding: 12px;
+  font-size: 16px;
+  background-color: #00763d;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background-color 0.3s;
+  margin-top: 20px;
+}
+
+.gpaGoals-submit-button:hover {
+  background-color: #005f2d;
+}
+
+.gpaGoals-message {
+  margin-top: 20px;
+  font-size: 16px;
+  color: #00763d;
+  text-align: center;
+}
