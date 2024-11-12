@@ -1,6 +1,7 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import axios from "axios";
 import GradingSections from "./gradingSectionsForm"; // Component to add grading sections
+import "../../styles/courseForm.css";
 
 const CourseForm = ({ course, onSave, onCancel }) => {
   const [name, setName] = useState(course ? course.name : "");
@@ -17,31 +18,26 @@ const CourseForm = ({ course, onSave, onCancel }) => {
         )
       : axios.post(`http://localhost:3001/user/${userId}/courses`, courseData);
 
-    request.then((response) => {
-      onSave(response.data);
-    });
+    request.then((response) => onSave(response.data));
   };
 
-  // Delete a specific section
   const handleDeleteSection = (sectionIndex) => {
-    const updatedSections = sections.filter(
-      (_, index) => index !== sectionIndex
-    );
+    const updatedSections = sections.filter((_, index) => index !== sectionIndex);
     setSections(updatedSections);
   };
 
-  // Delete a specific assignment within a section
   const handleDeleteAssignment = (sectionIndex, assignmentIndex) => {
     const updatedSections = [...sections];
-    updatedSections[sectionIndex].assignments = updatedSections[
-      sectionIndex
-    ].assignments.filter((_, index) => index !== assignmentIndex);
+    updatedSections[sectionIndex].assignments = updatedSections[sectionIndex].assignments.filter(
+      (_, index) => index !== assignmentIndex
+    );
     setSections(updatedSections);
   };
 
   return (
     <div className="course-form">
       <h3>{course ? "Edit Course" : "Add a Course"}</h3>
+      
       <div className="form-group">
         <label>Course Name:</label>
         <input
@@ -49,8 +45,10 @@ const CourseForm = ({ course, onSave, onCancel }) => {
           value={name}
           onChange={(e) => setName(e.target.value)}
           className="form-control"
+          placeholder="Enter course name"
         />
       </div>
+
       <div className="form-group">
         <label>Course Hours:</label>
         <input
@@ -59,8 +57,10 @@ const CourseForm = ({ course, onSave, onCancel }) => {
           onChange={(e) => setHours(e.target.value)}
           className="form-control"
           min="1"
+          placeholder="Enter course hours"
         />
       </div>
+
       <GradingSections
         sections={sections}
         setSections={setSections}
@@ -68,12 +68,14 @@ const CourseForm = ({ course, onSave, onCancel }) => {
         onDeleteAssignment={handleDeleteAssignment}
       />
 
-      <button onClick={handleSave} className="btn btn-primary">
-        Save Course
-      </button>
-      <button onClick={onCancel} className="btn btn-secondary">
-        Cancel
-      </button>
+      <div className="button-group">
+        <button onClick={handleSave} className="btn btn-primary">
+          Save Course
+        </button>
+        <button onClick={onCancel} className="btn btn-secondary">
+          Cancel
+        </button>
+      </div>
     </div>
   );
 };
