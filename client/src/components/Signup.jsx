@@ -1,5 +1,5 @@
 // src/components/Signup.jsx
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import axios from "axios";
 import Footer from "./Footer"; // Import Footer
@@ -14,9 +14,15 @@ function Signup() {
     e.preventDefault();
     axios
       .post("http://localhost:3001/signup", { name, email, password })
-      .then((result) => console.log(result))
-      .catch((error) => console.log(error));
-    navigate("/login");
+      .then((result) => {
+        if (result.data && result.data._id) {
+          localStorage.setItem("userId", result.data._id);
+          navigate("/setup");
+        } else {
+          alert("Failed to create account. Please try again."); //FIX THIS
+        }
+      })
+      .catch((error) => console.log("Error during signup:", error));
   };
 
   return (
