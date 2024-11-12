@@ -1,5 +1,5 @@
-import React from 'react';
-import '@testing-library/jest-dom'; // Add this import at the top
+import React from 'react';  // Import React explicitly
+import '@testing-library/jest-dom';
 import { render, fireEvent, screen, waitFor } from '@testing-library/react';
 import { vi } from 'vitest'; // Import vi from vitest
 import { BrowserRouter, useNavigate } from 'react-router-dom'; // Import useNavigate
@@ -18,6 +18,10 @@ vi.mock('react-router-dom', () => ({
 }));
 
 describe('Login Component', () => {
+  beforeEach(() => {
+    localStorage.clear(); // Clear localStorage before each test to avoid conflicts
+  });
+
   // Black Box Testing: Testing the form behavior from the user's perspective
   test('should render login form and handle input changes', () => {
     render(
@@ -78,7 +82,7 @@ describe('Login Component', () => {
   // Black Box Testing: Testing the system's behavior with incorrect input
   test('should display error message on unsuccessful login', async () => {
     // Mocking an unsuccessful response from the login API (White Box Testing: Mock internal API behavior)
-    axios.post.mockResolvedValueOnce({ data: 'Invalid credentials' });
+    axios.post.mockResolvedValueOnce({ data: { message: 'Invalid credentials' } });
 
     render(
       <BrowserRouter>
@@ -97,5 +101,18 @@ describe('Login Component', () => {
 
     // Black Box Testing: Check if the error message appears to the user
     await screen.findByText('Invalid credentials'); // Assuming alert shows this text
+  });
+
+  // Black Box Testing: Test for correct button text
+  test('should render login button with correct text', () => {
+    render(
+      <BrowserRouter>
+        <Login />
+      </BrowserRouter>
+    );
+
+    const loginButton = screen.getByRole('button', { name: /login/i });
+    expect(loginButton).toBeInTheDocument(); // Verifying the login button is rendered
+    expect(loginButton).toHaveTextContent('Login'); // Verifying the button text is correct
   });
 });
