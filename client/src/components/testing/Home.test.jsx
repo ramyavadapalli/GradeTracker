@@ -41,4 +41,62 @@ describe('Home Component', () => {
     expect(title).toBeInTheDocument();  // Black-box testing: Verifying title renders correctly
     expect(subtitle).toBeInTheDocument(); // Black-box testing: Verifying subtitle renders correctly
   });
+
+  // Additional Tests for Better Coverage
+
+  test('renders Navbar with correct links', () => {
+    renderWithRouter(<Home />); // Black-box testing: Rendering Home component with Router
+    const signupLink = screen.getByText(/Sign-up/i); // Black-box testing: Finding "Sign-up" link by text
+    expect(signupLink).toBeInTheDocument();  // Black-box testing: Verifying "Sign-up" link is rendered
+    expect(signupLink).toHaveAttribute('href', '/register'); // Black-box testing: Verifying link's href attribute
+  });
+
+  test('renders correct alt text for background image', () => {
+    renderWithRouter(<Home />); // Black-box testing: Rendering Home component with Router
+    const backgroundImage = screen.getByAltText(/Background/i); // Black-box testing: Finding image by alt text
+    expect(backgroundImage).toBeInTheDocument();  // Black-box testing: Verifying background image is rendered
+  });
+
+  test('ensures main content area contains correct elements', () => {
+    renderWithRouter(<Home />); // Black-box testing: Rendering Home component with Router
+    const content = screen.getByRole('main'); // Black-box testing: Finding main content area by role
+    expect(content).toBeInTheDocument(); // Black-box testing: Verifying main content area is present
+  });
+
+  test('ensures the "Join Now" button has correct class name', () => {
+    renderWithRouter(<Home />); // Black-box testing: Rendering Home component with Router
+    const joinNowLink = screen.getByText(/Join Now/i); // Black-box testing: Finding "Join Now" link by text
+    expect(joinNowLink).toHaveClass('joinNow'); // White-box testing: Verifying the correct class name is applied
+  });
+
+  test('renders the page title with correct styling class', () => {
+    renderWithRouter(<Home />); // Black-box testing: Rendering Home component with Router
+    const title = screen.getByText(/Track smarter, achieve higher/i); // Black-box testing: Finding title text
+    expect(title).toHaveClass('title'); // White-box testing: Verifying correct class is applied to title
+  });
+
+  test('renders the page subtitle with correct styling class', () => {
+    renderWithRouter(<Home />); // Black-box testing: Rendering Home component with Router
+    const subtitle = screen.getByText(/Your all-in-one tool for monitoring grades/i); // Black-box testing: Finding subtitle text
+    expect(subtitle).toHaveClass('subtitle'); // White-box testing: Verifying correct class is applied to subtitle
+  });
+
+  test('renders Navbar without profile link', () => {
+    renderWithRouter(<Home />); // Black-box testing: Rendering Home component with Router
+    const profileLink = screen.queryByText(/Profile/i); // Black-box testing: Querying for the "Profile" link
+    expect(profileLink).not.toBeInTheDocument(); // Black-box testing: Verifying "Profile" link is not rendered
+  });
+
+  test('ensures footer contains correct role', () => {
+    renderWithRouter(<Home />); // Black-box testing: Rendering Home component with Router
+    const footerElement = screen.getByRole('contentinfo'); // Black-box testing: Finding footer by role
+    expect(footerElement).toBeInTheDocument(); // Black-box testing: Verifying footer renders correctly
+  });
+
+  test('ensures main image is displayed with appropriate size', () => {
+    renderWithRouter(<Home />); // Black-box testing: Rendering Home component with Router
+    const backgroundImage = screen.getByAltText('Background'); // Black-box testing: Finding image by alt text
+    expect(backgroundImage).toHaveAttribute('src', '/images/homepagePic.png'); // Black-box testing: Verifying correct image source
+    expect(backgroundImage).toHaveClass('backgroundImage'); // White-box testing: Verifying image has the correct class name
+  });
 });
