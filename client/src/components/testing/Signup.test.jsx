@@ -10,15 +10,14 @@ import axios from 'axios'; // Importing axios for making API calls
 vi.mock('axios');
 
 // Mock react-router-dom and include useNavigate and Link
-// White Box Testing: We're mocking navigation behavior using `useNavigate`
+// White Box Testing: We're mocking navigation behavior using useNavigate
 vi.mock('react-router-dom', () => ({
   BrowserRouter: ({ children }) => <div>{children}</div>, // Mock BrowserRouter for routing functionality
-  useNavigate: vi.fn(), // Mock `useNavigate` with vi.fn()
+  useNavigate: vi.fn(), // Mock useNavigate with vi.fn()
   Link: ({ children, ...props }) => <a {...props}>{children}</a>, // Mock Link as a simple anchor tag
 }));
 
 describe('Signup Component', () => {
-
   // Black Box Testing: Testing form behavior from the user's perspective
   test('should render signup form and handle input changes', () => {
     render(
@@ -109,5 +108,86 @@ describe('Signup Component', () => {
 
     // Verify the error message is displayed (Black Box: ensuring that the user sees the expected error message on the UI)
     expect(screen.getByText('Email already exists')).toBeInTheDocument();
+  });
+
+  // -------------------- Additional Tests --------------------
+
+  // Black Box Testing: Testing if the 'Register' button is rendered correctly
+  test('should render Register button', () => {
+    render(
+      <BrowserRouter>
+        <Signup />
+      </BrowserRouter>
+    );
+
+    // Verify that the Register button is present
+    const registerButton = screen.getByRole('button', { name: /register/i });
+    expect(registerButton).toBeInTheDocument();
+  });
+
+  // Black Box Testing: Testing successful rendering of the footer
+  test('should render Footer component', () => {
+    render(
+      <BrowserRouter>
+        <Signup />
+      </BrowserRouter>
+    );
+
+    // Verify that Footer is rendered
+    expect(screen.getByText(/Already Have an Account/i)).toBeInTheDocument();
+  });
+
+  // Black Box Testing: Test to verify that password input type is correct
+  test('should render password input with correct type', () => {
+    render(
+      <BrowserRouter>
+        <Signup />
+      </BrowserRouter>
+    );
+
+    // Verify that the password input is of type password
+    const passwordInput = screen.getByLabelText(/password/i);
+    expect(passwordInput).toHaveAttribute('type', 'password');
+  });
+
+  // Black Box Testing: Test to ensure all input fields are rendered
+  test('should render all input fields', () => {
+    render(
+      <BrowserRouter>
+        <Signup />
+      </BrowserRouter>
+    );
+
+    // Verify that all input fields are present
+    expect(screen.getByLabelText(/name/i)).toBeInTheDocument();
+    expect(screen.getByLabelText(/email/i)).toBeInTheDocument();
+    expect(screen.getByLabelText(/password/i)).toBeInTheDocument();
+  });
+
+  // White Box Testing: Testing if error state is cleared on successful submission
+  test('should clear error state on successful submission', async () => {
+    // Mocking a successful response from the signup API
+    axios.post.mockResolvedValueOnce({ data: { message: 'User created successfully' } });
+
+    render(
+      <BrowserRouter>
+        <Signup />
+      </BrowserRouter>
+    );
+
+    // Select the form fields and submit button
+    const nameInput = screen.getByLabelText(/name/i);
+    const emailInput = screen.getByLabelText(/email/i);
+    const passwordInput = screen.getByLabelText(/password/i);
+    const submitButton = screen.getByRole('button', { name: /register/i });
+
+    // Simulate user input and submitting the form
+    fireEvent.change(nameInput, { target: { value: 'Jane Doe' } });
+    fireEvent.change(emailInput, { target: { value: 'jane.doe@example.com' } });
+    fireEvent.change(passwordInput, { target: { value: 'password123' } });
+    fireEvent.click(submitButton);
+
+    // Wait for the API call to be made and verify no error message is present
+    await waitFor(() => expect(screen.queryByText('Email already exists')).not.toBeInTheDocument());
   });
 });
