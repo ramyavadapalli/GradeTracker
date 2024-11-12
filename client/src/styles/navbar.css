@@ -1,53 +1,61 @@
 /* Main Navbar Container */
-nav {
-  position: fixed; /* Keeps the navbar fixed at the top */
-  top: 0; /* Aligns it to the top */
-  left: 0; /* Aligns it to the left */
-  width: 100%; /* Ensures full width of the viewport */
-  background-color: #f1f8e9; /* Background color to match footer */
-  color: #00763d; /* Text color to match footer */
-  z-index: 1000; /* Keep it on top of other content */
+.navbar {
   display: flex;
   justify-content: space-between;
-  padding: 20px; /* Padding for aesthetics */
+  align-items: center;
+  padding: 15px 30px; /* Balanced padding */
+  width: 100%; /* Full width of the viewport */
+  background-color: #f1f8e9; /* Light green background */
+  color: #00763d; /* Green text color */
   box-shadow: 0px 2px 10px rgba(0, 0, 0, 0.1); /* Shadow for depth */
+  box-sizing: border-box; /* Ensures padding doesn’t affect width */
 }
 
 /* Logo Section (Left) */
 .logoSection {
   display: flex;
-  align-items: center; /* Center items vertically */
+  align-items: center;
 }
 
-/* Logo Image */
 .logo {
-  height: 16px; /* Adjust height of the logo image (smaller) */
+  height: 24px; /* Adjust height of the logo */
   margin-right: 10px; /* Space between logo and brand name */
 }
 
-/* Right Section: Signup and Sign In Links */
+.brandName {
+  color: #00763d; /* Same color as other navbar elements */
+  font-size: 20px; /* Font size for brand name */
+  font-weight: bold; /* Bold for emphasis */
+  text-decoration: none; /* Remove underline */
+}
+
+/* Right Section (Sign Up, Sign In, Logout) */
 .rightSection {
   display: flex;
-  align-items: center; /* Center items vertically */
+  align-items: center;
 }
 
-/* Button Styles */
+/* Common Button Styles */
 .signupButton,
-.signinButton {
+.signinButton,
+.logoutButton {
   color: #00763d; /* Text color */
-  font-weight: bold; /* Font weight for button text */
+  font-weight: bold;
   text-decoration: none; /* Remove underline */
-  font-size: 18px; /* Font size for button */
+  font-size: 16px;
   margin-left: 15px; /* Space between buttons */
-  background-color: transparent; /* Transparent background */
-  border: 2px solid #00763d; /* Green border */
-  padding: 8px 12px; /* Padding for buttons */
+  background-color: transparent;
+  border: 2px solid #00763d; /* Border color */
+  padding: 8px 16px; /* Padding for balanced look */
   border-radius: 5px; /* Rounded corners */
-  transition: background-color 0.3s; /* Smooth transition */
+  cursor: pointer; /* Pointer cursor */
+  transition: background-color 0.3s ease, color 0.3s ease; /* Smooth transition */
 }
 
+/* Hover Effect */
 .signupButton:hover,
-.signinButton:hover {
-  background-color: #00763d; /* Green background on hover */
+.signinButton:hover,
+.logoutButton:hover {
+  background-color: #00763d; /* Dark green background */
   color: white; /* White text on hover */
 }
