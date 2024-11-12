@@ -1,5 +1,7 @@
 import React from "react";
 import { Link, useNavigate } from "react-router-dom";
+import { FaSignOutAlt } from "react-icons/fa"; // Import the logout icon
+import "../styles/Navbar.css"; // Assuming your CSS file is Navbar.css
 
 const Navbar = () => {
   const navigate = useNavigate();
@@ -24,21 +26,13 @@ const Navbar = () => {
         </Link>
       </div>
 
-      {/* Right Section: Signup/Sign In or Logout */}
+      {/* Right Section: Logout button with icon if logged in */}
       <div className="rightSection">
-        {isLoggedIn ? (
+        {isLoggedIn && (
           <button onClick={handleLogout} className="logoutButton">
+            <FaSignOutAlt className="logoutIcon" /> {/* Icon for logout */}
             Logout
           </button>
-        ) : (
-          <>
-            <Link to="/register" className="signupButton">
-              Sign Up
-            </Link>
-            <Link to="/login" className="signinButton">
-              Sign In
-            </Link>
-          </>
         )}
       </div>
     </nav>
@@ -46,6 +40,7 @@ const Navbar = () => {
 };
 
 export default Navbar;
+
 
 // const Navbar = ({ showSignup = true }) => {
 //   return (

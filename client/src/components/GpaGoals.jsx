@@ -43,10 +43,10 @@ const GpaGoals = () => {
   return (
     <div className="page-container">
       <Navbar />
-      <main className="container">
-        <h1 className="title">Set Your GPA Goals</h1>
-        <form className="goal-form" onSubmit={handleSubmit}>
-          <div className="form-group">
+      <main className="gpaGoals-container">
+        <h1 className="gpaGoals-title">Set Your GPA Goals</h1>
+        <form className="gpaGoals-form" onSubmit={handleSubmit}>
+          <div className="gpaGoals-form-group">
             <label htmlFor="semesterGoal">Semester GPA Goal:</label>
             <input
               type="number"
@@ -54,13 +54,14 @@ const GpaGoals = () => {
               min="0"
               max="4.0"
               id="semesterGoal"
+              className="gpaGoals-input"
               value={semesterGoal}
               onChange={(e) => setSemesterGoal(e.target.value)}
               placeholder="Enter semester GPA goal"
             />
           </div>
 
-          <div className="form-group">
+          <div className="gpaGoals-form-group">
             <label htmlFor="cumulativeGoal">Cumulative GPA Goal:</label>
             <input
               type="number"
@@ -68,18 +69,19 @@ const GpaGoals = () => {
               min="0"
               max="4.0"
               id="cumulativeGoal"
+              className="gpaGoals-input"
               value={cumulativeGoal}
               onChange={(e) => setCumulativeGoal(e.target.value)}
               placeholder="Enter cumulative GPA goal"
             />
           </div>
 
-          <button type="submit" className="submit-button">
+          <button type="submit" className="gpaGoals-submit-button">
             Set Goals
           </button>
         </form>
 
-        {message && <p className="message">{message}</p>}
+        {message && <p className="gpaGoals-message">{message}</p>}
       </main>
       <Footer />
     </div>

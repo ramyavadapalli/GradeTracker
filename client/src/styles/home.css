@@ -1,132 +1,63 @@
-/* Navbar should be fixed at the top */
-nav {
-  position: fixed; /* This keeps the navbar fixed at the top */
-  top: 0; /* Aligns it to the top */
-  left: 0; /* Aligns it to the left */
-  width: 100%; /* Ensures full width of the viewport */
-  background-color: #f1f8e9; /* Background color to match footer */
-  color: #00763d; /* Text color to match footer */
-  z-index: 1000; /* Keep it on top of other content */
-  display: flex;
-  justify-content: space-between;
-  padding: 20px; /* Padding for aesthetics */
-  box-shadow: 0px 2px 10px rgba(0, 0, 0, 0.1); /* Shadow for depth */
-}
-
-/* Brand Name */
-.brandName {
-  font-size: 35px; /* Font size for the brand name */
-  color: #00763d; /* Set the brand name color to green */
-  text-decoration: none; /* Remove underline */
-  transition: color 0.3s ease; /* Smooth color transition on hover */
-  font-family: 'Sedan SC', sans-serif; /* Apply Sedan SC font */
-}
-
-.brandName:hover {
-  color: #004d26; /* Darken the color on hover */
-}
-
-/* Brand Name */
-.logo{
-  font-size: 24px; /* Font size for the brand name */
-  color: #00763d; /* Set the brand name color to green */
-  text-decoration: none; /* Remove underline */
-  transition: color 0.3s ease; /* Smooth color transition on hover */
-  font-family: 'Sedan SC', sans-serif; /* Apply Sedan SC font */
-}
-
-.logo:hover {
-  color: #004d26; /* Darken the color on hover */
-}
-
-/* Ensure the main content is below the navbar */
+/* Main container styling */
 .main {
   position: relative;
-  margin-top: 60px; /* Adjust based on the navbar height */
-  height: calc(100vh - 60px); /* Full height minus navbar */
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  text-align: center;
-  width: 100%; /* Full width */
-  overflow: hidden; /* Prevents overflow */
+  width: 100%;
+  height: 100vh;
+  overflow: hidden;
 }
 
-/* Background Image Styling */
+/* Background image styling */
 .backgroundImage {
-  position: fixed; /* Change to fixed to cover entire viewport */
-  top: 0;
-  left: 0;
   width: 100%;
   height: 100%;
-  object-fit: cover; /* Ensures the image covers the entire area */
-  z-index: -1; /* Behind all content */
+  object-fit: cover;
+  position: absolute;
+  top: 0;
+  left: 0;
+  z-index: -1; /* Places image behind content */
 }
 
-/* Title styles */
+/* Centered content styling */
+.content {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  text-align: center;
+  background: rgba(255, 255, 255, 0.85); /* White semi-transparent background for readability */
+  padding: 20px 30px;
+  border-radius: 10px;
+  box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
+  max-width: 80%; /* Adjust to fit the layout */
+}
+
+/* Title styling */
 .title {
-  font-size: 75px; /* Font size from Figma */
-  font-style: italic; /* Make it italic */
-  font-weight: 600; /* Semi-bold weight */
-  font-family: 'Roboto Condensed', sans-serif; /* Use Roboto Condensed */
-  margin-top: 50px; /* Increase this value for more space above the title */
-  margin-bottom: 10px; /* Space below the title */
-  padding-left: 5px; /* Add padding to the left for spacing */
+  font-size: 2.5rem;
+  font-weight: bold;
+  color: #00763d;
+  margin: 0;
 }
 
-/* Subtitle styles */
+/* Subtitle styling */
 .subtitle {
-  font-size: 1rem; /* Adjust size as needed */
-  text-align: left; /* Align to the left */
-  margin: 0; /* Remove default margin */
-  padding-left: 20px; /* Add padding to the left for spacing */
-  font-family: 'Roboto', sans-serif; /* Apply Roboto font */
+  font-size: 1.2rem;
+  color: #333;
+  margin: 10px 0 20px;
 }
 
-/* Join Now button styles */
+/* Join Now button styling */
 .joinNow {
-  display: inline-block; /* Keeps it inline with proper spacing */
-  margin-top: 20px; /* Space above the link */
-  margin-left: 10px; /* Move the button 10px to the right */
-  padding: 5px 10px; /* Padding for tighter spacing */
-  background-color: #0070f3; /* Background color */
-  color: white; /* Text color */
-  border-radius: 5px; /* Rounded corners */
-  text-decoration: none; /* Remove underline */
-  font-size: 1rem; /* Font size */
+  display: inline-block;
+  padding: 10px 20px;
+  font-size: 1rem;
+  background-color: #00763d;
+  color: white;
+  text-decoration: none;
+  border-radius: 5px;
+  transition: background-color 0.3s ease;
 }
 
 .joinNow:hover {
-  background-color: #005bb5; /* Darker blue on hover */
-}
-
-/* Add styles for signup and signin buttons if they are present in the navbar */
-.signupButton,
-.signinButton {
-  color: #00763d; /* Text color for buttons */
-  font-weight: bold;
-  text-decoration: none;
-  font-size: 18px;
-  margin-left: 15px; /* Space between buttons */
-}
-
-.signupButton:hover,
-.signinButton:hover {
-  text-decoration: underline; /* Underline on hover */
-}
-
-/* Additional styles for Sign In button */
-.signupButton,
-.signinButton {
-  background-color: transparent; /* Transparent background */
-  border: 1px solid #00763d; /* Green border */
-  padding: 8px 12px; /* Padding for button */
-  border-radius: 5px; /* Rounded corners */
-  transition: background-color 0.3s; /* Smooth transition */
-}
-
-.signupButton:hover,
-.signinButton:hover {
-  background-color: #00763d; /* Change to footer color on hover */
-  color: white; /* Change text to white on hover */
+  background-color: #005f2d;
 }

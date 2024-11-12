@@ -6,6 +6,7 @@
   color: #00763d; /* Text color to match the header */
   margin-top: auto; /* Ensures it stays at the bottom of the container */
   width: 100%; /* Full width of the footer */
+  box-sizing: border-box; /* Ensures padding does not affect width */
 }
 
 .leftSection {
