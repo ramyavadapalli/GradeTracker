@@ -189,6 +189,58 @@ app.delete("/user/:userId/courses/:courseId", async (req, res) => {
   }
 });
 
+//route to add a task
+app.post("/user/:userId/tasks", async (req, res) => {
+  const { userId } = req.params;
+  const { text } = req.body;
+
+  try {
+    const user = await StudentModel.findById(userId);
+    if (user) {
+      const newTask = { text, completed: false };
+      user.tasks.push(newTask);
+      await user.save();
+      res.status(201).json(user.tasks[user.tasks.length - 1]); // Send the last added task
+    } else {
+      res.status(404).json({ message: "User not found" });
+    }
+  } catch (error) {
+    res.status(500).json({ message: "Error adding task" });
+  }
+});
+
+// Route to get all tasks for a user
+app.get("/user/:userId/tasks", async (req, res) => {
+  try {
+    const user = await StudentModel.findById(req.params.userId).select("tasks");
+    if (user) {
+      res.status(200).json(user.tasks);
+    } else {
+      res.status(404).json({ message: "User not found" });
+    }
+  } catch (error) {
+    res.status(500).json({ message: "Error fetching tasks" });
+  }
+});
+
+// Route to delete a specific task
+app.delete("/user/:userId/tasks/:taskId", async (req, res) => {
+  const { userId, taskId } = req.params;
+
+  try {
+    const user = await StudentModel.findById(userId);
+    if (user) {
+      user.tasks = user.tasks.filter((task) => task._id.toString() !== taskId);
+      await user.save();
+      res.status(200).json({ message: "Task deleted successfully" });
+    } else {
+      res.status(404).json({ message: "User not found" });
+    }
+  } catch (error) {
+    res.status(500).json({ message: "Error deleting task" });
+  }
+});
+
 app.listen(3001, () => {
   console.log("server is running");
 });
