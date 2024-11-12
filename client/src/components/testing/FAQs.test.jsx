@@ -1,4 +1,4 @@
-// src/components/__test__/FAQ.test.js
+// src/components/__test__/FAQs.test.js
 import React from "react";
 import '@testing-library/jest-dom';
 import { render, screen, fireEvent } from "@testing-library/react";
