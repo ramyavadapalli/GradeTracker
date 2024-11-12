@@ -165,6 +165,30 @@ app.put("/user/:userId/courses/:courseId", async (req, res) => {
   }
 });
 
+app.delete("/user/:userId/courses/:courseId", async (req, res) => {
+  const { userId, courseId } = req.params;
+
+  try {
+    const user = await StudentModel.findById(userId);
+    if (user) {
+      const courseIndex = user.courses.findIndex(
+        (course) => course._id.toString() === courseId
+      );
+      if (courseIndex > -1) {
+        user.courses.splice(courseIndex, 1); // Remove the course from the array
+        await user.save();
+        res.status(200).json({ message: "Course deleted successfully" });
+      } else {
+        res.status(404).json({ message: "Course not found" });
+      }
+    } else {
+      res.status(404).json({ message: "User not found" });
+    }
+  } catch (error) {
+    res.status(500).json({ message: "Error deleting course" });
+  }
+});
+
 app.listen(3001, () => {
   console.log("server is running");
 });

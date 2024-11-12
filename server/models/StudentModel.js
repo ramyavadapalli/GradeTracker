@@ -5,9 +5,14 @@ const SemesterSchema = new mongoose.Schema({
   gpa: { type: Number, required: true },
 });
 
+const AssignmentSchema = new mongoose.Schema({
+  name: { type: String, required: true },
+  grade: { type: Number, required: true },
+});
 const SectionSchema = new mongoose.Schema({
   name: { type: String, required: true },
   weight: { type: Number, required: true },
+  assignments: [AssignmentSchema],
 });
 
 const CourseSchema = new mongoose.Schema({

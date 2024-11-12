@@ -1,7 +1,5 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
-import Navbar from "../Navbar";
-import Footer from "../Footer";
 import GradingSections from "./gradingSectionsForm"; // Component to add grading sections
 
 const CourseForm = ({ course, onSave, onCancel }) => {
@@ -22,6 +20,23 @@ const CourseForm = ({ course, onSave, onCancel }) => {
     request.then((response) => {
       onSave(response.data);
     });
+  };
+
+  // Delete a specific section
+  const handleDeleteSection = (sectionIndex) => {
+    const updatedSections = sections.filter(
+      (_, index) => index !== sectionIndex
+    );
+    setSections(updatedSections);
+  };
+
+  // Delete a specific assignment within a section
+  const handleDeleteAssignment = (sectionIndex, assignmentIndex) => {
+    const updatedSections = [...sections];
+    updatedSections[sectionIndex].assignments = updatedSections[
+      sectionIndex
+    ].assignments.filter((_, index) => index !== assignmentIndex);
+    setSections(updatedSections);
   };
 
   return (
@@ -46,7 +61,12 @@ const CourseForm = ({ course, onSave, onCancel }) => {
           min="1"
         />
       </div>
-      <GradingSections sections={sections} setSections={setSections} />
+      <GradingSections
+        sections={sections}
+        setSections={setSections}
+        onDeleteSection={handleDeleteSection}
+        onDeleteAssignment={handleDeleteAssignment}
+      />
 
       <button onClick={handleSave} className="btn btn-primary">
         Save Course

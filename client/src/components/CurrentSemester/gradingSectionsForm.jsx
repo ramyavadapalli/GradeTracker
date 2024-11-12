@@ -1,6 +1,11 @@
 import React from "react";
 
-const GradingSections = ({ sections, setSections }) => {
+const GradingSections = ({
+  sections,
+  setSections,
+  onDeleteSection,
+  onDeleteAssignment,
+}) => {
   const handleSectionChange = (index, field, value) => {
     const updatedSections = [...sections];
     updatedSections[index] = { ...updatedSections[index], [field]: value };
@@ -8,19 +13,38 @@ const GradingSections = ({ sections, setSections }) => {
   };
 
   const handleAddSection = () => {
-    setSections([...sections, { name: "", weight: "" }]);
+    setSections([...sections, { name: "", weight: "", assignments: [] }]);
+  };
+
+  const handleAddAssignment = (sectionIndex) => {
+    const updatedSections = [...sections];
+    updatedSections[sectionIndex].assignments.push({ name: "", grade: "" });
+    setSections(updatedSections);
+  };
+
+  const handleAssignmentChange = (
+    sectionIndex,
+    assignmentIndex,
+    field,
+    value
+  ) => {
+    const updatedSections = [...sections];
+    updatedSections[sectionIndex].assignments[assignmentIndex][field] = value;
+    setSections(updatedSections);
   };
 
   return (
     <div className="grading-sections">
       <h4>Grading Sections</h4>
-      {sections.map((section, index) => (
-        <div key={index} className="form-group">
+      {sections.map((section, sectionIndex) => (
+        <div key={sectionIndex} className="form-group">
           <input
             type="text"
             placeholder="Section name"
             value={section.name}
-            onChange={(e) => handleSectionChange(index, "name", e.target.value)}
+            onChange={(e) =>
+              handleSectionChange(sectionIndex, "name", e.target.value)
+            }
             className="form-control"
           />
           <input
@@ -28,11 +52,67 @@ const GradingSections = ({ sections, setSections }) => {
             placeholder="Section weight (%)"
             value={section.weight}
             onChange={(e) =>
-              handleSectionChange(index, "weight", e.target.value)
+              handleSectionChange(sectionIndex, "weight", e.target.value)
             }
             className="form-control"
             min="0"
           />
+          <button
+            onClick={() => onDeleteSection(sectionIndex)} // Correctly use onDeleteSection here
+            className="btn btn-danger btn-sm"
+          >
+            Delete Section
+          </button>
+
+          <h5>Assignments</h5>
+          {section.assignments.map((assignment, assignmentIndex) => (
+            <div key={assignmentIndex} className="form-group">
+              <input
+                type="text"
+                placeholder="Assignment name"
+                value={assignment.name}
+                onChange={(e) =>
+                  handleAssignmentChange(
+                    sectionIndex,
+                    assignmentIndex,
+                    "name",
+                    e.target.value
+                  )
+                }
+                className="form-control"
+              />
+              <input
+                type="number"
+                placeholder="Grade"
+                value={assignment.grade}
+                onChange={(e) =>
+                  handleAssignmentChange(
+                    sectionIndex,
+                    assignmentIndex,
+                    "grade",
+                    e.target.value
+                  )
+                }
+                className="form-control"
+                min="0"
+                max="100"
+              />
+              <button
+                onClick={() =>
+                  onDeleteAssignment(sectionIndex, assignmentIndex)
+                } // Correctly use onDeleteAssignment here
+                className="btn btn-danger btn-sm"
+              >
+                Delete Assignment
+              </button>
+            </div>
+          ))}
+          <button
+            onClick={() => handleAddAssignment(sectionIndex)}
+            className="btn btn-link"
+          >
+            + Add Assignment
+          </button>
         </div>
       ))}
       <button onClick={handleAddSection} className="btn btn-link">
@@ -43,101 +123,3 @@ const GradingSections = ({ sections, setSections }) => {
 };
 
 export default GradingSections;
-
-// import React, { useState } from "react";
-// import "../../styles/gradingSections.css"; // Import custom styles
-
-// function GradingSections({ courseName }) {
-//   const [sections, setSections] = useState([{ name: "", weight: "" }]);
-//   const [isPercentage, setIsPercentage] = useState(true); // Toggle between percentage/points
-//   const [totalWeight, setTotalWeight] = useState(0);
-
-//   // Handle section name and weight changes
-//   const handleSectionChange = (index, field, value) => {
-//     const updatedSections = [...sections];
-//     updatedSections[index] = { ...updatedSections[index], [field]: value };
-//     setSections(updatedSections);
-
-//     // Update total weight
-//     calculateTotalWeight(updatedSections);
-//   };
-
-//   // Calculate total weight
-//   const calculateTotalWeight = (sections) => {
-//     const total = sections.reduce(
-//       (sum, section) => sum + parseFloat(section.weight || 0),
-//       0
-//     );
-//     setTotalWeight(total);
-//   };
-
-//   // Add new section
-//   const handleAddSection = () => {
-//     setSections([...sections, { name: "", weight: "" }]);
-//   };
-
-//   // Toggle between percentage and points
-//   const handleToggle = () => {
-//     setIsPercentage(!isPercentage);
-//   };
-
-//   return (
-//     <div className="container">
-//       <h2>{courseName}</h2>
-//       <h3>Grading Sections Weights</h3>
-
-//       {/* Toggle between percentage and points */}
-//       <div className="toggle-switch">
-//         <label>
-//           <input type="radio" checked={isPercentage} onChange={handleToggle} />
-//           Percentage
-//         </label>
-//         <label>
-//           <input type="radio" checked={!isPercentage} onChange={handleToggle} />
-//           Points
-//         </label>
-//       </div>
-
-//       {/* Section input fields */}
-//       {sections.map((section, index) => (
-//         <div key={index} className="form-group">
-//           <input
-//             type="text"
-//             placeholder="Enter section name..."
-//             value={section.name}
-//             onChange={(e) => handleSectionChange(index, "name", e.target.value)}
-//             className="form-control"
-//           />
-//           <input
-//             type="number"
-//             placeholder={`Enter ${isPercentage ? "percentage" : "points"}...`}
-//             value={section.weight}
-//             onChange={(e) =>
-//               handleSectionChange(index, "weight", e.target.value)
-//             }
-//             className="form-control"
-//             min="0"
-//           />
-//           {isPercentage && <span>%</span>}
-//         </div>
-//       ))}
-
-//       {/* Add new section */}
-//       <button onClick={handleAddSection} className="btn btn-link">
-//         + add a section
-//       </button>
-
-//       {/* Total weight */}
-//       <div className="total-weight">
-//         <h4>
-//           Total Class Weight: {totalWeight} {isPercentage ? "%" : "points"}
-//         </h4>
-//       </div>
-
-//       {/* Submit button */}
-//       <button className="btn btn-primary">Submit</button>
-//     </div>
-//   );
-// }
-
-// export default GradingSections;

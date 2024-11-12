@@ -7,6 +7,7 @@ const CurrentSemester = () => {
   const [courses, setCourses] = useState([]);
   const [isEditing, setIsEditing] = useState(false);
   const [currentCourse, setCurrentCourse] = useState(null);
+  const [GPA, setGPA] = useState(0);
   const userId = localStorage.getItem("userId");
 
   useEffect(() => {
@@ -15,8 +16,38 @@ const CurrentSemester = () => {
       .get(`http://localhost:3001/user/${userId}/courses`)
       .then((response) => {
         setCourses(response.data);
-      });
+      })
+      .catch((error) => console.error("Error fetching courses:", error));
   }, [userId]);
+
+  // Calculate GPA based on course data
+  const calculateGPA = () => {
+    let totalWeight = 0;
+    let weightedGrades = 0;
+
+    courses.forEach((course) => {
+      course.sections.forEach((section) => {
+        if (section.assignments && section.assignments.length > 0) {
+          // Calculate average grade for this section
+          const sectionGrade =
+            section.assignments.reduce(
+              (sum, a) => sum + parseFloat(a.grade || 0),
+              0
+            ) / section.assignments.length;
+          // Weighted grade calculation
+          weightedGrades += (sectionGrade * section.weight) / 100;
+          totalWeight += section.weight;
+        }
+      });
+    });
+
+    return totalWeight > 0 ? (weightedGrades / totalWeight) * 4 : 0; // GPA scale of 4.0
+  };
+
+  // Recalculate GPA whenever courses change
+  useEffect(() => {
+    setGPA(calculateGPA());
+  }, [courses]);
 
   const handleAddCourse = () => {
     setCurrentCourse(null); // Reset current course for a new entry
@@ -39,9 +70,23 @@ const CurrentSemester = () => {
     setIsEditing(false);
   };
 
+  const handleDeleteCourse = (courseId) => {
+    if (window.confirm("Are you sure you want to delete this course?")) {
+      axios
+        .delete(`http://localhost:3001/user/${userId}/courses/${courseId}`)
+        .then(() => {
+          setCourses((prevCourses) =>
+            prevCourses.filter((course) => course._id !== courseId)
+          );
+        })
+        .catch((error) => console.error("Error deleting course:", error));
+    }
+  };
+
   return (
     <div className="container">
       <h1>Current Semester Courses</h1>
+      <h3>Current Semester GPA: {GPA.toFixed(2)}</h3>
       {isEditing ? (
         <CourseForm
           course={currentCourse}
@@ -61,11 +106,29 @@ const CurrentSemester = () => {
                 <div className="grading-sections">
                   <h4>Grading Sections</h4>
                   {course.sections && course.sections.length > 0 ? (
-                    course.sections.map((section, index) => (
-                      <div key={index} className="section-item">
+                    course.sections.map((section, sectionIndex) => (
+                      <div key={sectionIndex} className="section-item">
                         <p>
                           <strong>{section.name}</strong>: {section.weight}%
                         </p>
+                        <h5>Assignments</h5>
+                        {section.assignments &&
+                        section.assignments.length > 0 ? (
+                          section.assignments.map(
+                            (assignment, assignmentIndex) => (
+                              <div
+                                key={assignmentIndex}
+                                className="assignment-item"
+                              >
+                                <p>
+                                  {assignment.name}: {assignment.grade}%
+                                </p>
+                              </div>
+                            )
+                          )
+                        ) : (
+                          <p>No assignments added</p>
+                        )}
                       </div>
                     ))
                   ) : (
@@ -78,6 +141,12 @@ const CurrentSemester = () => {
                 >
                   Edit Course
                 </button>
+                <button
+                  onClick={() => handleDeleteCourse(course._id)}
+                  className="btn btn-danger"
+                >
+                  Delete Course
+                </button>
               </div>
             ))}
           </div>
@@ -88,118 +157,3 @@ const CurrentSemester = () => {
 };
 
 export default CurrentSemester;
-
-// import React, { useState } from "react";
-// import "../../styles/currentSemester.css"; // Import your custom styles
-// import GradingSections from "./gradingSectionsForm";
-
-// function CurrentSemester() {
-//   const [step, setStep] = useState(1); // Manage the current step
-//   const [numCourses, setNumCourses] = useState(""); // Number of courses
-//   const [courses, setCourses] = useState([]); // Course data (names and hours)
-//   const [currentCourseIndex, setCurrentCourseIndex] = useState(0);
-
-//   // Handle changes for number of courses
-//   const handleNumCoursesChange = (e) => {
-//     setNumCourses(e.target.value);
-//   };
-
-//   // Handle changes for course details (name, credit hours)
-//   const handleCourseChange = (index, field, value) => {
-//     const updatedCourses = [...courses];
-//     updatedCourses[index] = { ...updatedCourses[index], [field]: value };
-//     setCourses(updatedCourses);
-//   };
-
-//   const handleNextStep = () => {
-//     if (step === 1 && numCourses > 0) {
-//       setCourses(
-//         Array.from({ length: numCourses }, () => ({ name: "", hours: "" }))
-//       );
-//       setStep(2);
-//     } else if (step === 2 && currentCourseIndex < courses.length - 1) {
-//       setCurrentCourseIndex(currentCourseIndex + 1);
-//       setStep(3); // Move to grading sections
-//     }
-//   };
-
-//   // Go back to the previous step
-//   const handlePreviousStep = () => {
-//     if (step === 3) {
-//       setCurrentCourseIndex(currentCourseIndex - 1);
-//     } else {
-//       setStep(step - 1);
-//     }
-//   };
-
-//   return (
-//     <div className="container">
-//       <h2>Vanderbilt University</h2>
-//       {step === 1 && (
-//         <div className="form-group">
-//           <h3>Let’s start tracking your current semester.</h3>
-//           <label>Courses</label>
-//           <input
-//             type="number"
-//             className="form-control"
-//             placeholder="Enter # of courses..."
-//             value={numCourses}
-//             onChange={handleNumCoursesChange}
-//             min="1"
-//           />
-//           <button onClick={handleNextStep} className="btn btn-primary mt-3">
-//             Next
-//           </button>
-//         </div>
-//       )}
-
-//       {step === 2 && (
-//         <div>
-//           <h3>Enter your course details</h3>
-//           {courses.map((course, index) => (
-//             <div key={index} className="form-group">
-//               <label>Course {index + 1}</label>
-//               <input
-//                 type="text"
-//                 className="form-control"
-//                 placeholder="Enter course name..."
-//                 value={course.name}
-//                 onChange={(e) =>
-//                   handleCourseChange(index, "name", e.target.value)
-//                 }
-//               />
-//               <input
-//                 type="number"
-//                 className="form-control"
-//                 placeholder="Enter # of hours..."
-//                 value={course.hours}
-//                 onChange={(e) =>
-//                   handleCourseChange(index, "hours", e.target.value)
-//                 }
-//                 min="1"
-//               />
-//             </div>
-//           ))}
-//           <button
-//             onClick={handlePreviousStep}
-//             className="btn btn-secondary mt-3"
-//           >
-//             Back
-//           </button>
-//           <button onClick={handleNextStep} className="btn btn-primary mt-3">
-//             Next
-//           </button>
-//         </div>
-//       )}
-//       {step === 3 && (
-//         <GradingSections
-//           courseName={courses[currentCourseIndex].name}
-//           onPrevious={handlePreviousStep}
-//           onNext={handleNextStep}
-//         />
-//       )}
-//     </div>
-//   );
-// }
-
-// export default CurrentSemester;
