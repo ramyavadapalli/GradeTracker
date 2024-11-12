@@ -5,94 +5,85 @@ import GradingSections from "../CurrentSemester/gradingSectionsForm";
 
 
 describe('GradingSections Component', () => {
+  
+  // Black-box testing: Testing the rendering and display of course name.
   test('renders the GradingSections component with course name', () => {
     render(<GradingSections courseName="Math 101" />);
     expect(screen.getByText('Math 101')).toBeInTheDocument();
   });
 
+  // Black-box testing: Testing user interaction (toggle) and expected behavior without knowing internal code.
   test('toggles between percentage and points', () => {
     render(<GradingSections courseName="Math 101" />);
     
-    // Initially, percentage should be selected
     const percentageRadio = screen.getByLabelText('Percentage');
     const pointsRadio = screen.getByLabelText('Points');
     
-    expect(percentageRadio).toBeChecked();
+    expect(percentageRadio).toBeChecked(); // Initially percentage should be checked
     expect(pointsRadio).not.toBeChecked();
 
-    // Toggle to points
-    fireEvent.click(pointsRadio);
+    fireEvent.click(pointsRadio); // Toggle to points
     expect(pointsRadio).toBeChecked();
     expect(percentageRadio).not.toBeChecked();
 
-    // Toggle back to percentage
-    fireEvent.click(percentageRadio);
+    fireEvent.click(percentageRadio); // Toggle back to percentage
     expect(percentageRadio).toBeChecked();
     expect(pointsRadio).not.toBeChecked();
   });
 
+  // Black-box testing: Testing user interaction (click) and its effect on the UI (section addition).
   test('adds a new section on clicking "+ add a section"', () => {
     render(<GradingSections courseName="Math 101" />);
 
-    // Check for one section initially
     const initialSectionInput = screen.getAllByPlaceholderText('Enter section name...');
-    expect(initialSectionInput).toHaveLength(1);
+    expect(initialSectionInput).toHaveLength(1); // Initially one section input
 
-    // Click on add section button
-    fireEvent.click(screen.getByText('+ add a section'));
+    fireEvent.click(screen.getByText('+ add a section')); // User clicks "Add a section" button
 
-    // There should now be two section inputs
     const updatedSectionInputs = screen.getAllByPlaceholderText('Enter section name...');
-    expect(updatedSectionInputs).toHaveLength(2);
+    expect(updatedSectionInputs).toHaveLength(2); // After click, two section inputs
   });
 
+  // Black-box testing: Testing the form input functionality from a user's perspective, without concern for internal code.
   test('updates section name and weight on input change', () => {
     render(<GradingSections courseName="Math 101" />);
 
-    // Enter section name and weight
     const nameInput = screen.getByPlaceholderText('Enter section name...');
     const weightInput = screen.getByPlaceholderText('Enter percentage...');
 
     fireEvent.change(nameInput, { target: { value: 'Homework' } });
     fireEvent.change(weightInput, { target: { value: '20' } });
 
-    // Check if the inputs have the updated values
-    expect(nameInput.value).toBe('Homework');
+    expect(nameInput.value).toBe('Homework'); // Verifying user input
     expect(weightInput.value).toBe('20');
   });
 
+  // Black-box testing: Testing the output displayed to the user when interacting with the form, without knowing the underlying logic.
   test('calculates total weight correctly for percentages', () => {
     render(<GradingSections courseName="Math 101" />);
 
     const weightInput = screen.getByPlaceholderText('Enter percentage...');
     
-    // Enter weight for the section
     fireEvent.change(weightInput, { target: { value: '25' } });
-    
-    // Check if the total weight is updated correctly
     expect(screen.getByText('Total Class Weight: 25 %')).toBeInTheDocument();
 
-    // Add another section and input its weight
-    fireEvent.click(screen.getByText('+ add a section'));
+    fireEvent.click(screen.getByText('+ add a section')); // Add another section
     const newWeightInput = screen.getAllByPlaceholderText('Enter percentage...')[1];
     fireEvent.change(newWeightInput, { target: { value: '35' } });
 
-    // Check if total weight is updated with both sections
-    expect(screen.getByText('Total Class Weight: 60 %')).toBeInTheDocument();
+    expect(screen.getByText('Total Class Weight: 60 %')).toBeInTheDocument(); // Verifying the updated total weight
   });
 
+  // Black-box testing: Ensuring that when toggling to points, the total weight is displayed correctly.
   test('displays points when toggled and calculates total points correctly', () => {
     render(<GradingSections courseName="Math 101" />);
 
-    // Toggle to points
     const pointsRadio = screen.getByLabelText('Points');
-    fireEvent.click(pointsRadio);
+    fireEvent.click(pointsRadio); // Toggle to points
 
-    // Enter points for the section
     const pointsInput = screen.getByPlaceholderText('Enter points...');
     fireEvent.change(pointsInput, { target: { value: '50' } });
 
-    // Check if total weight is displayed in points
-    expect(screen.getByText('Total Class Weight: 50 points')).toBeInTheDocument();
+    expect(screen.getByText('Total Class Weight: 50 points')).toBeInTheDocument(); // Verifying total points
   });
 });
