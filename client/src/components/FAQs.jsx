@@ -1,4 +1,4 @@
-// src/components/FAQ.jsx
+// src/components/FAQs.jsx
 import React, { useState } from "react";
 import Navbar from "./Navbar"; // Import Navbar
 import Footer from "./Footer"; // Import Footer
