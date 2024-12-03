@@ -1,9 +1,11 @@
 import React, { useState, useEffect } from "react";
+import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import CourseForm from "./CourseForm";
 import "../../styles/currentSemester.css";
 import Navbar from "../Navbar";
 import Footer from "../Footer";
+import WhatIf from "./WhatIf";
 
 const CurrentSemester = () => {
   const [courses, setCourses] = useState([]);
@@ -11,6 +13,11 @@ const CurrentSemester = () => {
   const [currentCourse, setCurrentCourse] = useState(null);
   const [GPA, setGPA] = useState(0);
   const userId = localStorage.getItem("userId");
+  const navigate = useNavigate();
+
+  const handleBackToDashboard = () => {
+    navigate("/dashboard");
+  };
 
   useEffect(() => {
     axios
@@ -36,6 +43,22 @@ const CurrentSemester = () => {
       });
     });
     return totalWeight > 0 ? (weightedGrades / totalWeight) * 4 : 0;
+  };
+
+  const calculateLetterGrade = (grade) => {
+    if (grade >= 97) return "A+";
+    if (grade >= 93) return "A-";
+    if (grade >= 90) return "A";
+    if (grade >= 87) return "B+";
+    if (grade >= 83) return "B-";
+    if (grade >= 80) return "B";
+    if (grade >= 77) return "C+";
+    if (grade >= 73) return "C-";
+    if (grade >= 70) return "C";
+    if (grade >= 67) return "D+";
+    if (grade >= 63) return "D-";
+    if (grade >= 60) return "D";
+    return "F";
   };
 
   useEffect(() => {
@@ -81,6 +104,12 @@ const CurrentSemester = () => {
       <Navbar />
       <div className="current-semester-container">
         <div className="content-wrapper">
+          <button
+            onClick={handleBackToDashboard}
+            className="back-to-dashboard-button"
+          >
+            Back
+          </button>
           <h1 className="page-title">Current Semester Courses</h1>
           <h3 className="gpa">Current Semester GPA: {GPA.toFixed(2)}</h3>
           {isEditing ? (
@@ -98,7 +127,11 @@ const CurrentSemester = () => {
                 {courses.map((course) => (
                   <div key={course._id} className="course-item">
                     <div className="course-header">
-                      <h2>{course.name}</h2>
+                      <h2>
+                        {course.name} -{" "}
+                        {calculateLetterGrade(course.cumulativeGrade)} (
+                        {course.cumulativeGrade.toFixed(2)}%)
+                      </h2>
                       <button
                         onClick={() => handleDeleteCourse(course._id)}
                         className="delete-button"
@@ -147,6 +180,7 @@ const CurrentSemester = () => {
                   </div>
                 ))}
               </div>
+              <WhatIf courses={courses} />
             </>
           )}
         </div>

@@ -19,6 +19,7 @@ const CourseSchema = new mongoose.Schema({
   name: { type: String, required: true },
   hours: { type: Number, required: true },
   sections: [SectionSchema],
+  cumulativeGrade: { type: Number, default: 0 },
 });
 
 const TaskSchema = new mongoose.Schema({

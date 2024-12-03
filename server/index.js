@@ -11,6 +11,25 @@ mongoose.connect(
   "mongodb+srv://ramyavadapalli:35Gx4p8n@gradetrackr.ew27r.mongodb.net/gradeTrackr"
 );
 
+const calculateCumulativeGrade = (sections) => {
+  let totalWeight = 0;
+  let weightedGrades = 0;
+
+  sections.forEach((section) => {
+    if (section.assignments && section.assignments.length > 0) {
+      const sectionGrade =
+        section.assignments.reduce(
+          (sum, assignment) => sum + assignment.grade,
+          0
+        ) / section.assignments.length;
+      weightedGrades += (sectionGrade * section.weight) / 100;
+      totalWeight += section.weight;
+    }
+  });
+
+  return weightedGrades > 0 ? weightedGrades : 0;
+};
+
 app.post("/login", (req, res) => {
   const { email, password } = req.body;
   StudentModel.findOne({ email: email }).then((user) => {
@@ -104,22 +123,24 @@ app.get("/user/:userId/gpa-goals", async (req, res) => {
   }
 });
 
-//get all courses for user
+// Get all courses for a user
 app.get("/user/:userId/courses", async (req, res) => {
   const { userId } = req.params;
+
   try {
     const user = await StudentModel.findById(userId).select("courses");
     if (user) {
+      // Fetch courses without recalculating grades
       res.status(200).json(user.courses);
     } else {
       res.status(404).json({ message: "User not found" });
     }
   } catch (error) {
-    res.status(500).json({ message: "Error retriving courses" });
+    res.status(500).json({ message: "Error retrieving courses" });
   }
 });
 
-//add a new course
+// Add a new course
 app.post("/user/:userId/courses", async (req, res) => {
   const { userId } = req.params;
   const { name, hours, sections } = req.body;
@@ -127,9 +148,12 @@ app.post("/user/:userId/courses", async (req, res) => {
   try {
     const user = await StudentModel.findById(userId);
     if (user) {
-      const newCourse = { name, hours, sections };
+      const cumulativeGrade = calculateCumulativeGrade(sections); // Calculate grade once
+
+      const newCourse = { name, hours, sections, cumulativeGrade };
       user.courses.push(newCourse);
       await user.save();
+
       res.status(200).json(user.courses[user.courses.length - 1]);
     } else {
       res.status(404).json({ message: "User not found" });
@@ -139,7 +163,7 @@ app.post("/user/:userId/courses", async (req, res) => {
   }
 });
 
-//updating existing course
+// Update an existing course
 app.put("/user/:userId/courses/:courseId", async (req, res) => {
   const { userId, courseId } = req.params;
   const { name, hours, sections } = req.body;
@@ -152,6 +176,10 @@ app.put("/user/:userId/courses/:courseId", async (req, res) => {
         course.name = name;
         course.hours = hours;
         course.sections = sections;
+
+        // Calculate and save cumulative grade
+        course.cumulativeGrade = calculateCumulativeGrade(sections);
+
         await user.save();
         res.status(200).json(course);
       } else {
